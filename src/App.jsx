@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "./app.css";
+import "./App.css";
 
 const PHONE = "+7 (000) 000-00-00"; // потом заменишь
 const TG = "https://t.me/username"; // потом заменишь
