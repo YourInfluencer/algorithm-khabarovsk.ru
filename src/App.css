@@ -447,3 +447,42 @@ textarea.input{
 .toast-err{
   border-color: color-mix(in srgb, #ef4444 45%, var(--border));
 }
+
+/* ===== TRUST ===== */
+.trustGrid{
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.trustCard{
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 14px;
+}
+
+.trustIcon{
+  font-size: 22px;
+  margin-bottom: 6px;
+}
+
+.trustTitle{
+  font-weight: 900;
+  margin-bottom: 6px;
+}
+
+.trustText{
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+@media (max-width: 900px){
+  .trustGrid{ grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 520px){
+  .trustGrid{ grid-template-columns: 1fr; }
+}

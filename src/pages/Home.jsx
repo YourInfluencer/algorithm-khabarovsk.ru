@@ -1,5 +1,9 @@
 import { useState } from "react";
 
+function digitsOnly(s) {
+  return String(s || "").replace(/[^\d]/g, "");
+}
+
 export default function Home({ phone, tg, wa, onOpenContacts, onLeadSubmit }) {
   const [resultText, setResultText] = useState("");
   const [sending, setSending] = useState(false);
@@ -14,6 +18,12 @@ export default function Home({ phone, tg, wa, onOpenContacts, onLeadSubmit }) {
       phone: String(fd.get("phone") || ""),
       comment: String(fd.get("comment") || ""),
     };
+
+    // на всякий (у тебя ещё есть проверка в App.jsx)
+    if (digitsOnly(payload.phone).length < 10) {
+      setResultText("Введите телефон (минимум 10 цифр).");
+      return;
+    }
 
     try {
       setSending(true);
@@ -42,7 +52,7 @@ export default function Home({ phone, tg, wa, onOpenContacts, onLeadSubmit }) {
 
             <div className="cta">
               <a className="btn btnPrimary" href="/#/call">Вызвать мастера</a>
-              <a className="btn btnGhost" href={`tel:${phone.replace(/[^\d+]/g, "")}`}>Позвонить</a>
+              <a className="btn btnGhost" href={`tel:${digitsOnly(phone)}`}>Позвонить</a>
               <button className="btn btnGhost" type="button" onClick={onOpenContacts}>Контакты</button>
             </div>
 
@@ -64,6 +74,66 @@ export default function Home({ phone, tg, wa, onOpenContacts, onLeadSubmit }) {
             <div className="cta" style={{ marginTop: 12 }}>
               <a className="btn btnPrimary" href={tg} target="_blank" rel="noreferrer">Написать в Telegram</a>
               <a className="btn btnGhost" href={wa} target="_blank" rel="noreferrer">WhatsApp</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* WHY TRUST */}
+      <section className="section" id="trust">
+        <div className="wrap">
+          <h2>Почему нам доверяют</h2>
+          <p className="muted">
+            Без сложных слов. Наша задача — чтобы вам было понятно, удобно и спокойно.
+          </p>
+
+          <div className="trustGrid">
+            <div className="trustCard">
+              <div className="trustIcon">✅</div>
+              <div className="trustTitle">Цена до начала работ</div>
+              <div className="trustText">
+                Сначала диагностика и объяснение вариантов — потом решение. Без “сюрпризов” в конце.
+              </div>
+            </div>
+
+            <div className="trustCard">
+              <div className="trustIcon">🧾</div>
+              <div className="trustTitle">Понятно объясняем</div>
+              <div className="trustText">
+                Говорим простыми словами: что сломалось, что можно сделать и сколько это будет стоить.
+              </div>
+            </div>
+
+            <div className="trustCard">
+              <div className="trustIcon">🛠️</div>
+              <div className="trustTitle">Решаем под ключ</div>
+              <div className="trustText">
+                Не только “починили”, но и проверили: интернет, обновления, приложения, печать, настройки.
+              </div>
+            </div>
+
+            <div className="trustCard">
+              <div className="trustIcon">⏱️</div>
+              <div className="trustTitle">Быстрое реагирование</div>
+              <div className="trustText">
+                Можно написать в Telegram/WhatsApp — часто уже по описанию понятно, куда копать.
+              </div>
+            </div>
+
+            <div className="trustCard">
+              <div className="trustIcon">🛡️</div>
+              <div className="trustTitle">Гарантия</div>
+              <div className="trustText">
+                На выполненные работы. Если вопрос по нашей части — разберёмся без нервов.
+              </div>
+            </div>
+
+            <div className="trustCard">
+              <div className="trustIcon">🏠</div>
+              <div className="trustTitle">Дом и офис</div>
+              <div className="trustText">
+                Работаем и с домашней техникой, и с офисной: ПК, сеть, принтеры, камеры, ТВ.
+              </div>
             </div>
           </div>
         </div>
@@ -129,7 +199,7 @@ export default function Home({ phone, tg, wa, onOpenContacts, onLeadSubmit }) {
             <p className="muted">Нажмите «Контакты» — можно сразу позвонить или написать.</p>
             <div className="cta">
               <button className="btn btnPrimary" type="button" onClick={onOpenContacts}>Контакты</button>
-              <a className="btn btnGhost" href={`tel:${phone.replace(/[^\d+]/g, "")}`}>Позвонить</a>
+              <a className="btn btnGhost" href={`tel:${digitsOnly(phone)}`}>Позвонить</a>
             </div>
           </div>
         </div>
