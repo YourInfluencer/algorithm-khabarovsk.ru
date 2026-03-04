@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
-import { Link, Routes, Route, useLocation, useNavigate } from "react-router-dom";
+import { Link, Routes, Route, useLocation } from "react-router-dom";
 import "./App.css";
 
 import Home from "./pages/Home.jsx";
 import Prices from "./pages/Prices.jsx";
+import Services from "./pages/Services.jsx";
+import Consult from "./pages/Consult.jsx";
+import RequestPage from "./pages/RequestPage.jsx";
 
 const PHONE = "+7 (914) 774-24-68";
 const TG = "https://t.me/SergejVladimirovichVDK";
@@ -17,14 +20,6 @@ function getTheme() {
 function setTheme(theme) {
   document.documentElement.setAttribute("data-theme", theme);
   localStorage.setItem("theme", theme);
-}
-
-function scrollToHomeTopSmooth() {
-  setTimeout(() => {
-    const el = document.getElementById("home");
-    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-    else window.scrollTo({ top: 0, behavior: "smooth" });
-  }, 0);
 }
 
 function digitsOnly(s) {
@@ -41,18 +36,20 @@ export default function App() {
   const [sending, setSending] = useState(false);
 
   // toast
-  const [toast, setToast] = useState(null); // {type:"ok"|"err", text:string}
+  const [toast, setToast] = useState(null); // {type:"ok"|"err", text}
   const [toastKey, setToastKey] = useState(0);
 
   const location = useLocation();
-  const navigate = useNavigate();
 
   useEffect(() => setTheme(theme), [theme]);
 
+  // закрываем мобильное меню на переходах по страницам
   useEffect(() => {
     setIsMenuOpen(false);
-  }, [location.pathname, location.hash]);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [location.pathname]);
 
+  // Esc закрывает меню и модалку
   useEffect(() => {
     function onKeyDown(e) {
       if (e.key === "Escape") {
@@ -68,28 +65,17 @@ export default function App() {
     setToast({ type, text });
     setToastKey((k) => k + 1);
   }
-
   useEffect(() => {
     if (!toast) return;
     const t = setTimeout(() => setToast(null), 3200);
     return () => clearTimeout(t);
   }, [toastKey, toast]);
 
-  function goHomeTop() {
-    if (location.pathname === "/") {
-      scrollToHomeTopSmooth();
-      return;
-    }
-    navigate("/");
-    scrollToHomeTopSmooth();
-  }
-
   function openContacts() {
     setSentText("");
     setForm({ name: "", phone: "" });
     setIsContactsOpen(true);
   }
-
   function closeContacts() {
     setIsContactsOpen(false);
   }
@@ -112,13 +98,11 @@ export default function App() {
     return data; // { ok:true, id, ts }
   }
 
-  // Отправка формы из модалки контактов
   async function onSubmitModal(e) {
     e.preventDefault();
     setSentText("");
 
-    const d = digitsOnly(form.phone);
-    if (d.length < 10) {
+    if (digitsOnly(form.phone).length < 10) {
       showToast("err", "Введите телефон (минимум 10 цифр)");
       return;
     }
@@ -136,10 +120,7 @@ export default function App() {
       setSentText(`Заявка отправлена ✅ №${data.id}`);
       showToast("ok", `Заявка отправлена ✅ №${data.id}`);
 
-      // автозакрытие модалки
-      setTimeout(() => {
-        setIsContactsOpen(false);
-      }, 1200);
+      setTimeout(() => setIsContactsOpen(false), 1200);
     } catch (err) {
       console.error(err);
       showToast("err", "Не удалось отправить. Проверь сервер.");
@@ -148,15 +129,13 @@ export default function App() {
     }
   }
 
-  // Отправка с главной (Home.jsx ждёт ответ и покажет id)
+  // общий метод для страниц с формой
   async function onLeadSubmit(payload) {
-    const d = digitsOnly(payload.phone);
-    if (d.length < 10) {
+    if (digitsOnly(payload.phone).length < 10) {
       showToast("err", "Введите телефон (минимум 10 цифр)");
       throw new Error("PHONE_INVALID_FRONT");
     }
-
-    const data = await sendLead({ ...payload, source: "home_form" });
+    const data = await sendLead({ ...payload, source: payload.source || "site_form" });
     showToast("ok", `Заявка отправлена ✅ №${data.id}`);
     return data;
   }
@@ -172,17 +151,21 @@ export default function App() {
 
       <header className="topbar">
         <div className="wrap topbarInner">
-          <button className="brand brandBtn" type="button" onClick={goHomeTop} aria-label="На главную">
+          <Link className="brand" to="/" aria-label="На главную">
             <div className="brandText">Лого</div>
-          </button>
+          </Link>
 
+          {/* Десктоп-меню: страницы */}
           <nav className="navDesktop" aria-label="Навигация">
-            <button className="navLink navBtn" type="button" onClick={goHomeTop}>Главная</button>
-            <a className="navLink" href="/#/call">Вызвать мастера</a>
+            <Link className="navLink" to="/">Главная</Link>
+            <Link className="navLink" to="/services">Услуги</Link>
             <Link className="navLink" to="/prices">Цены</Link>
-            <a className="navLink" href="/#/consult">Консультация</a>
+            <Link className="navLink" to="/consult">Консультация</Link>
+            <Link className="navLink" to="/request">Заявка</Link>
 
-            <button className="btn btnPrimary" type="button" onClick={openContacts}>Контакты</button>
+            <button className="btn btnPrimary" type="button" onClick={openContacts}>
+              Контакты
+            </button>
 
             <button
               className="btnIcon"
@@ -195,8 +178,11 @@ export default function App() {
             </button>
           </nav>
 
+          {/* Мобильная шапка */}
           <div className="navMobile">
-            <button className="btn btnPrimary" type="button" onClick={openContacts}>Контакты</button>
+            <button className="btn btnPrimary" type="button" onClick={openContacts}>
+              Контакты
+            </button>
 
             <button
               className="btnIcon"
@@ -208,36 +194,27 @@ export default function App() {
               {theme === "light" ? "☀️" : "🌙"}
             </button>
 
-            <button
-              className="btnIcon"
-              type="button"
-              onClick={() => setIsMenuOpen((v) => !v)}
-              aria-label="Меню"
-              title="Меню"
-            >
+            <button className="btnIcon" type="button" onClick={() => setIsMenuOpen((v) => !v)} aria-label="Меню" title="Меню">
               ☰
             </button>
           </div>
         </div>
 
+        {/* Dropdown меню на мобилке */}
         {isMenuOpen && (
           <div className="mobileMenu" onMouseDown={() => setIsMenuOpen(false)}>
             <div className="wrap mobileMenuInner" onMouseDown={(e) => e.stopPropagation()}>
-              <button
-                className="mobileLink mobileBtn"
-                type="button"
-                onClick={() => { setIsMenuOpen(false); goHomeTop(); }}
-              >
-                Главная
-              </button>
-
-              <a className="mobileLink" href="/#/call" onClick={() => setIsMenuOpen(false)}>Вызвать мастера</a>
+              <Link className="mobileLink" to="/">Главная</Link>
+              <Link className="mobileLink" to="/services">Услуги</Link>
               <Link className="mobileLink" to="/prices">Цены</Link>
-              <a className="mobileLink" href="/#/consult" onClick={() => setIsMenuOpen(false)}>Консультация</a>
+              <Link className="mobileLink" to="/consult">Консультация</Link>
+              <Link className="mobileLink" to="/request">Оставить заявку</Link>
 
               <div className="mobileCtaRow">
-                <a className="btn btnPrimary" href="/#/call" onClick={() => setIsMenuOpen(false)}>Вызвать мастера</a>
                 <a className="btn btnGhost" href={`tel:${digitsOnly(PHONE)}`}>Позвонить</a>
+                <button className="btn btnPrimary" type="button" onClick={() => { setIsMenuOpen(false); openContacts(); }}>
+                  Контакты
+                </button>
               </div>
             </div>
           </div>
@@ -245,40 +222,14 @@ export default function App() {
       </header>
 
       <Routes>
-        <Route
-          path="/"
-          element={
-            <main>
-              <Home phone={PHONE} tg={TG} wa={WA} onOpenContacts={openContacts} onLeadSubmit={onLeadSubmit} />
-
-              <footer className="footer">
-                <div className="wrap footerRow">
-                  <div className="muted">© {new Date().getFullYear()} Сергей — сервис</div>
-                  <div className="muted"><Link to="/prices">Цены</Link></div>
-                </div>
-              </footer>
-            </main>
-          }
-        />
-
-        <Route
-          path="/prices"
-          element={
-            <>
-              <Prices />
-              <footer className="footer">
-                <div className="wrap footerRow">
-                  <div className="muted">© {new Date().getFullYear()} Сергей — сервис</div>
-                  <div className="muted">
-                    <button className="linkBtn" type="button" onClick={goHomeTop}>На главную</button>
-                  </div>
-                </div>
-              </footer>
-            </>
-          }
-        />
+        <Route path="/" element={<main><Home phone={PHONE} tg={TG} wa={WA} /></main>} />
+        <Route path="/services" element={<main><Services /></main>} />
+        <Route path="/prices" element={<Prices />} />
+        <Route path="/consult" element={<main><Consult tg={TG} wa={WA} onOpenContacts={openContacts} /></main>} />
+        <Route path="/request" element={<main><RequestPage onLeadSubmit={onLeadSubmit} /></main>} />
       </Routes>
 
+      {/* Модалка контактов */}
       {isContactsOpen && (
         <div className="modalOverlay" role="dialog" aria-modal="true" onMouseDown={closeContacts}>
           <div className="modalCard" onMouseDown={(e) => e.stopPropagation()}>
@@ -329,6 +280,7 @@ export default function App() {
         </div>
       )}
 
+      {/* Нижняя панель на мобилке */}
       <div className="mobileBar">
         <a className="btn btnPrimary mobileBarBtn" href={`tel:${digitsOnly(PHONE)}`}>Позвонить</a>
         <button className="btn btnGhost mobileBarBtn" type="button" onClick={openContacts}>Контакты</button>
