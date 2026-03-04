@@ -27,14 +27,22 @@ function scrollToHomeTopSmooth() {
   }, 0);
 }
 
+function digitsOnly(s) {
+  return String(s || "").replace(/[^\d]/g, "");
+}
+
 export default function App() {
   const [theme, setThemeState] = useState(getTheme());
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const [isContactsOpen, setIsContactsOpen] = useState(false);
   const [form, setForm] = useState({ name: "", phone: "" });
-  const [sentText, setSentText] = useState(""); // текст успеха (с id)
+  const [sentText, setSentText] = useState("");
   const [sending, setSending] = useState(false);
+
+  // toast
+  const [toast, setToast] = useState(null); // {type:"ok"|"err", text:string}
+  const [toastKey, setToastKey] = useState(0);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -56,6 +64,17 @@ export default function App() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
 
+  function showToast(type, text) {
+    setToast({ type, text });
+    setToastKey((k) => k + 1);
+  }
+
+  useEffect(() => {
+    if (!toast) return;
+    const t = setTimeout(() => setToast(null), 3200);
+    return () => clearTimeout(t);
+  }, [toastKey, toast]);
+
   function goHomeTop() {
     if (location.pathname === "/") {
       scrollToHomeTopSmooth();
@@ -67,6 +86,7 @@ export default function App() {
 
   function openContacts() {
     setSentText("");
+    setForm({ name: "", phone: "" });
     setIsContactsOpen(true);
   }
 
@@ -95,6 +115,14 @@ export default function App() {
   // Отправка формы из модалки контактов
   async function onSubmitModal(e) {
     e.preventDefault();
+    setSentText("");
+
+    const d = digitsOnly(form.phone);
+    if (d.length < 10) {
+      showToast("err", "Введите телефон (минимум 10 цифр)");
+      return;
+    }
+
     try {
       setSending(true);
 
@@ -105,11 +133,16 @@ export default function App() {
         source: "contacts_modal",
       });
 
-      setForm({ name: "", phone: "" });
       setSentText(`Заявка отправлена ✅ №${data.id}`);
+      showToast("ok", `Заявка отправлена ✅ №${data.id}`);
+
+      // автозакрытие модалки
+      setTimeout(() => {
+        setIsContactsOpen(false);
+      }, 1200);
     } catch (err) {
       console.error(err);
-      alert("Не удалось отправить. Проверь, что сервер запущен и VITE_API_URL верный.");
+      showToast("err", "Не удалось отправить. Проверь сервер.");
     } finally {
       setSending(false);
     }
@@ -117,12 +150,26 @@ export default function App() {
 
   // Отправка с главной (Home.jsx ждёт ответ и покажет id)
   async function onLeadSubmit(payload) {
+    const d = digitsOnly(payload.phone);
+    if (d.length < 10) {
+      showToast("err", "Введите телефон (минимум 10 цифр)");
+      throw new Error("PHONE_INVALID_FRONT");
+    }
+
     const data = await sendLead({ ...payload, source: "home_form" });
-    return data; // передаём наверх (Home.jsx)
+    showToast("ok", `Заявка отправлена ✅ №${data.id}`);
+    return data;
   }
 
   return (
     <>
+      {/* toast */}
+      {toast && (
+        <div className={`toast toast-${toast.type}`} role="status" aria-live="polite">
+          {toast.text}
+        </div>
+      )}
+
       <header className="topbar">
         <div className="wrap topbarInner">
           <button className="brand brandBtn" type="button" onClick={goHomeTop} aria-label="На главную">
@@ -190,7 +237,7 @@ export default function App() {
 
               <div className="mobileCtaRow">
                 <a className="btn btnPrimary" href="/#/call" onClick={() => setIsMenuOpen(false)}>Вызвать мастера</a>
-                <a className="btn btnGhost" href={`tel:${PHONE.replace(/[^\d+]/g, "")}`}>Позвонить</a>
+                <a className="btn btnGhost" href={`tel:${digitsOnly(PHONE)}`}>Позвонить</a>
               </div>
             </div>
           </div>
@@ -202,13 +249,7 @@ export default function App() {
           path="/"
           element={
             <main>
-              <Home
-                phone={PHONE}
-                tg={TG}
-                wa={WA}
-                onOpenContacts={openContacts}
-                onLeadSubmit={onLeadSubmit}
-              />
+              <Home phone={PHONE} tg={TG} wa={WA} onOpenContacts={openContacts} onLeadSubmit={onLeadSubmit} />
 
               <footer className="footer">
                 <div className="wrap footerRow">
@@ -247,7 +288,7 @@ export default function App() {
             </div>
 
             <div className="contactLinks">
-              <a className="contactLink" href={`tel:${PHONE.replace(/[^\d+]/g, "")}`}>{PHONE}</a>
+              <a className="contactLink" href={`tel:${digitsOnly(PHONE)}`}>{PHONE}</a>
               <a className="contactLink" href={TG} target="_blank" rel="noreferrer">Telegram</a>
               <a className="contactLink" href={WA} target="_blank" rel="noreferrer">WhatsApp</a>
             </div>
@@ -289,7 +330,7 @@ export default function App() {
       )}
 
       <div className="mobileBar">
-        <a className="btn btnPrimary mobileBarBtn" href={`tel:${PHONE.replace(/[^\d+]/g, "")}`}>Позвонить</a>
+        <a className="btn btnPrimary mobileBarBtn" href={`tel:${digitsOnly(PHONE)}`}>Позвонить</a>
         <button className="btn btnGhost mobileBarBtn" type="button" onClick={openContacts}>Контакты</button>
       </div>
     </>
