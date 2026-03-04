@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 
-const PHONE = "+7 (000) 000-00-00"; // потом заменишь
-const TG = "https://t.me/username"; // потом заменишь
-const WA = "https://wa.me/70000000000"; // потом заменишь
+const PHONE = "+7 (914) 774-24-68";
+const TG = "https://t.me/SergejVladimirovichVDK";
+const WA = "https://wa.me/70000000000"; // оставляем заглушку
 
 function getTheme() {
   const saved = localStorage.getItem("theme");
