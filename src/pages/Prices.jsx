@@ -1,81 +1,153 @@
+import { useState } from "react";
+
+function digitsOnly(s) {
+  return String(s || "").replace(/[^\d]/g, "");
+}
+
 export default function Prices() {
+  const [sending, setSending] = useState(false);
+  const [resultText, setResultText] = useState("");
+
+  async function submit(e) {
+    e.preventDefault();
+    setResultText("");
+
+    const fd = new FormData(e.currentTarget);
+    const payload = {
+      name: String(fd.get("name") || ""),
+      phone: String(fd.get("phone") || ""),
+      comment: String(fd.get("comment") || ""),
+      source: "prices_form",
+    };
+
+    const d = digitsOnly(payload.phone);
+    if (d.length < 10) {
+      setResultText("Введите телефон (минимум 10 цифр).");
+      return;
+    }
+
+    try {
+      setSending(true);
+      const API = import.meta.env.VITE_API_URL || "http://localhost:8080";
+
+      const resp = await fetch(`${API}/api/lead`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await resp.json().catch(() => ({}));
+      if (!resp.ok || !data.ok) throw new Error(data?.error || `HTTP_${resp.status}`);
+
+      setResultText(`Заявка отправлена ✅ №${data.id}`);
+      e.currentTarget.reset();
+    } catch (err) {
+      console.error(err);
+      setResultText("Не удалось отправить. Проверь, что сервер запущен.");
+    } finally {
+      setSending(false);
+    }
+  }
+
   return (
     <main>
       <section className="section">
         <div className="wrap">
           <h1 className="pageTitle">Цены</h1>
           <p className="muted">
-            Точная стоимость зависит от причины неисправности и деталей. Поэтому сначала диагностика,
-            потом — согласование цены. Без согласования работу не начинаем.
+            Здесь — ориентиры по стоимости. Точная цена зависит от модели и симптомов,
+            но мы всегда <b>согласуем стоимость до начала работ</b>.
           </p>
 
-          {/* Быстрые пакеты (понятно старшему поколению) */}
           <div className="priceGrid">
             <div className="priceCard">
-              <div className="priceName">Консультация / мелкая настройка</div>
-              <div className="priceFrom">от … ₽</div>
-              <ul className="list">
-                <li>подключить/настроить устройство</li>
-                <li>исправить простые ошибки</li>
-                <li>проверить “почему не работает”</li>
-              </ul>
-              <div className="muted small">Если решается быстро — выйдет дешевле.</div>
+              <div className="priceName">Диагностика</div>
+              <div className="priceFrom">от 500 ₽</div>
+              <div className="muted small">
+                Проверка причины неисправности, оценка вариантов и стоимости ремонта.
+              </div>
             </div>
 
             <div className="priceCard">
-              <div className="priceName">Обслуживание</div>
-              <div className="priceFrom">от … ₽</div>
-              <ul className="list">
-                <li>чистка, профилактика, настройка</li>
-                <li>ускорение работы (если возможно)</li>
-                <li>проверка после работ</li>
-              </ul>
-              <div className="muted small">Подходит, если “тормозит/греется/глючит”.</div>
+              <div className="priceName">Настройка / обслуживание</div>
+              <div className="priceFrom">от 1 500 ₽</div>
+              <div className="muted small">
+                Настройка Windows/программ, ускорение, чистка системы, драйверы, Wi-Fi/роутер.
+              </div>
             </div>
 
             <div className="priceCard">
-              <div className="priceName">Ремонт</div>
-              <div className="priceFrom">от … ₽</div>
-              <ul className="list">
-                <li>диагностика причины</li>
-                <li>ремонт/замена узлов</li>
-                <li>согласование деталей до покупки</li>
-              </ul>
-              <div className="muted small">Детали оплачиваются отдельно, если нужны.</div>
+              <div className="priceName">Ремонт / замена деталей</div>
+              <div className="priceFrom">от 3 000 ₽</div>
+              <div className="muted small">
+                Замена комплектующих, ремонт питания, разъёмов, пайка, восстановление после залития (по ситуации).
+              </div>
             </div>
           </div>
 
-          {/* Таблица по направлениям */}
-          <div className="card" style={{ marginTop: 12 }}>
-            <div className="cardTitle">Ориентиры по работам</div>
-
-            <div className="row"><span>Диагностика</span><b>от … ₽</b></div>
-            <div className="row"><span>Настройка / обслуживание</span><b>от … ₽</b></div>
-            <div className="row"><span>Ремонт / замена деталей</span><b>от … ₽</b></div>
-            <div className="row"><span>Выезд по городу</span><b>от … ₽</b></div>
-
-            <p className="muted small" style={{ marginTop: 10 }}>
-              Если после диагностики ремонт нецелесообразен — скажем честно и предложим варианты.
-            </p>
+          <div className="section" style={{ paddingTop: 14 }}>
+            <div className="card">
+              <div className="cardTitle">Что влияет на стоимость</div>
+              <ul className="miniList">
+                <li><b>Модель и сложность разборки</b> (ультрабуки, моноблоки, тонкие ТВ и т.д.).</li>
+                <li><b>Симптомы</b>: “не включается” обычно сложнее, чем “настроить”.</li>
+                <li><b>Нужны ли детали</b>: стоимость зависит от наличия и цены запчастей.</li>
+                <li><b>Срочность</b> и объём работ (одна задача или комплекс).</li>
+              </ul>
+              <p className="muted small" style={{ marginTop: 10 }}>
+                Мы не делаем “втихаря”. Если по ходу диагностики появляются варианты —
+                объясняем, показываем и согласуем.
+              </p>
+            </div>
           </div>
 
-          {/* Почему цена “после диагностики” */}
-          <div className="card" style={{ marginTop: 12 }}>
-            <div className="cardTitle">Почему цена зависит от диагностики</div>
-            <ul className="list">
-              <li>Одинаковые симптомы могут иметь разные причины</li>
-              <li>Иногда достаточно настройки, а иногда нужна деталь</li>
-              <li>Мы называем стоимость до начала работ — чтобы без сюрпризов</li>
-            </ul>
+          <div className="section" style={{ paddingTop: 0 }}>
+            <div className="card">
+              <div className="cardTitle">Популярные работы (ориентиры)</div>
+              <div className="row"><span>Установка/настройка Windows + базовый набор программ</span><b>от 3 000 ₽</b></div>
+              <div className="row"><span>Чистка ноутбука + термопаста (если требуется)</span><b>от 2 000 ₽</b></div>
+              <div className="row"><span>Подключение принтера/МФУ, настройка печати/сканирования</span><b>от 1 500 ₽</b></div>
+              <div className="row"><span>Настройка Wi-Fi/роутера, устранение “пропадает интернет”</span><b>от 1 500 ₽</b></div>
+              <div className="row"><span>Телевизор: настройка Smart TV / приложений / приставки</span><b>от 1 500 ₽</b></div>
+              <div className="row"><span>Телевизор: диагностика “нет изображения / не включается”</span><b>от 1 000 ₽</b></div>
+              <p className="muted small" style={{ marginTop: 10 }}>
+                Это ориентиры. Иногда проблема решается быстро, а иногда нужна диагностика и варианты.
+              </p>
+            </div>
           </div>
 
-          <div className="card" style={{ marginTop: 12 }}>
-            <div className="cardTitle">Как быстрее оценить по фото/сообщению</div>
-            <p className="muted">
-              Напишите модель устройства и что происходит (что горит/пищит/пишет на экране, после чего началось).
-              Если есть фото — приложите.
-            </p>
+          <div className="section" style={{ paddingTop: 0 }}>
+            <div className="card">
+              <div className="cardTitle">Оставьте заявку — мы перезвоним</div>
+              <p className="muted">
+                Напишите модель и что случилось — мы скажем варианты и примерную вилку цены.
+              </p>
+
+              <form className="leadForm" onSubmit={submit}>
+                <input className="input" name="name" placeholder="Имя" autoComplete="name" />
+                <input className="input" name="phone" placeholder="Телефон" autoComplete="tel" inputMode="tel" required />
+                <textarea className="input" name="comment" placeholder="Модель и симптомы (например: LG 50, не включается; ноут шумит и греется)" rows={3} />
+
+                <button className="btn btnPrimary" type="submit" disabled={sending}>
+                  {sending ? "Отправляем..." : "Отправить"}
+                </button>
+
+                {resultText && <div className="sentOk">{resultText}</div>}
+              </form>
+            </div>
           </div>
+
+          <div className="section" style={{ paddingTop: 0 }}>
+            <div className="card">
+              <div className="cardTitle">Как подготовиться, чтобы мы помогли быстрее</div>
+              <ul className="miniList">
+                <li>Напишите <b>модель</b> (или фото шильдика) и <b>симптомы</b>.</li>
+                <li>Если ТВ/монитор — скажите: есть ли звук, реагирует ли на пульт, мигает ли индикатор.</li>
+                <li>Если ПК/ноут — скажите: включается ли, есть ли картинка, что менялось “до” (обновления/падение/залитие).</li>
+              </ul>
+            </div>
+          </div>
+
         </div>
       </section>
     </main>
