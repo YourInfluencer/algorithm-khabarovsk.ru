@@ -6,23 +6,33 @@ function digitsPhone(phone) {
 
 export default function Footer({ phone, tg, wa }) {
   return (
-    <footer className="footer footerBar">
+    <footer className="footer footerBar" role="contentinfo">
       <div className="wrap footerBarInner">
-        {/* левый блок */}
-        <div className="footerLeft muted">© {new Date().getFullYear()} Сергей — сервис</div>
-
-        {/* центр: контакты */}
-        <div className="footerCenter">
-          <a className="footerLink" href={`tel:${digitsPhone(phone)}`}>{phone}</a>
-          <span className="dot">•</span>
-          <a className="footerLink" href={tg} target="_blank" rel="noreferrer">Telegram</a>
-          <span className="dot">•</span>
-          <a className="footerLink" href={wa} target="_blank" rel="noreferrer">WhatsApp</a>
+        {/* слева: как работаем */}
+        <div className="footerLeft">
+          <Link className="footerLink" to="/#about">
+            Как работаем
+          </Link>
         </div>
 
-        {/* справа: как работаем */}
-        <div className="footerRight">
-          <Link className="footerLink" to="/#about">Как работаем</Link>
+        {/* центр: контакты */}
+        <div className="footerCenter" aria-label="Контакты">
+          <a className="footerLink" href={`tel:${digitsPhone(phone)}`}>
+            {phone}
+          </a>
+          <span className="dot">•</span>
+          <a className="footerLink" href={tg} target="_blank" rel="noreferrer">
+            Telegram
+          </a>
+          <span className="dot">•</span>
+          <a className="footerLink" href={wa} target="_blank" rel="noreferrer">
+            WhatsApp
+          </a>
+        </div>
+
+        {/* справа: копирайт */}
+        <div className="footerRight muted">
+          © {new Date().getFullYear()} Сергей — сервис
         </div>
       </div>
     </footer>

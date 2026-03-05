@@ -132,7 +132,7 @@ export default function App() {
   }
 
   return (
-    <>
+    <div className="appShell">
       {/* toast */}
       {toast && (
         <div className={`toast toast-${toast.type}`} role="status" aria-live="polite">
@@ -146,13 +146,16 @@ export default function App() {
         onOpenContacts={openContacts}
       />
 
-      <Routes>
-        <Route path="/" element={<main><Home phone={PHONE} tg={TG} wa={WA} /></main>} />
-        <Route path="/services" element={<main><Services /></main>} />
-        <Route path="/prices" element={<Prices />} />
-        <Route path="/consult" element={<main><Consult tg={TG} wa={WA} onOpenContacts={openContacts} /></main>} />
-        <Route path="/request" element={<main><RequestPage onLeadSubmit={onLeadSubmit} /></main>} />
-      </Routes>
+      {/* Контент (растягивается, чтобы футер ушёл вниз) */}
+      <div className="appMain">
+        <Routes>
+          <Route path="/" element={<main><Home phone={PHONE} tg={TG} wa={WA} /></main>} />
+          <Route path="/services" element={<main><Services /></main>} />
+          <Route path="/prices" element={<Prices />} />
+          <Route path="/consult" element={<main><Consult tg={TG} wa={WA} onOpenContacts={openContacts} /></main>} />
+          <Route path="/request" element={<main><RequestPage onLeadSubmit={onLeadSubmit} /></main>} />
+        </Routes>
+      </div>
 
       {/* footer (бордер снизу) */}
       <Footer phone={PHONE} tg={TG} wa={WA} />
@@ -206,6 +209,6 @@ export default function App() {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }

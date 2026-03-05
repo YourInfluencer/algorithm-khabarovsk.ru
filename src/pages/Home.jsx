@@ -3,12 +3,57 @@ import { Link, useNavigate } from "react-router-dom";
 
 export default function Home({ phone, tg, wa }) {
   const nav = useNavigate();
-
   const phoneDigits = useMemo(() => String(phone || "").replace(/[^\d+]/g, ""), [phone]);
 
   function goRequest(prefill, meta) {
     nav("/request", { state: { prefill, ...meta } });
   }
+
+  // Плитки устройств (под них потом поставишь картинки)
+  const tiles = [
+    {
+      title: "Телевизоры",
+      icon: "📺",
+      img: "/img/tv.webp", // положишь позже
+      prefill: "Телевизоры: ",
+      hint: "Укажите модель ТВ, есть ли звук, как ведёт себя индикатор, были ли щелчки. Если можете — фото/видео.",
+    },
+    {
+      title: "Компьютеры и ноутбуки",
+      icon: "💻",
+      img: "/img/laptop.webp",
+      prefill: "Компьютеры/ноутбуки: ",
+      hint: "Укажите модель, симптомы и что было «до» (обновление/падение/залитие). Если знаете — SSD/HDD и ОЗУ.",
+    },
+    {
+      title: "Принтеры и МФУ",
+      icon: "🖨️",
+      img: "/img/printer.webp",
+      prefill: "Принтер/МФУ: ",
+      hint: "Укажите модель, тип подключения (USB/Wi-Fi) и что пишет в ошибке. Если есть — фото результата печати.",
+    },
+    {
+      title: "Wi-Fi / интернет",
+      icon: "📶",
+      img: "/img/wifi.webp",
+      prefill: "Wi-Fi/интернет: ",
+      hint: "Укажите модель роутера, где плохо ловит, сколько устройств и что именно происходит (обрывы/нет интернета).",
+    },
+    {
+      title: "IP-камеры",
+      icon: "📷",
+      img: "/img/cctv.webp",
+      prefill: "IP-камеры: ",
+      hint: "Укажите сколько камер, где нужно смотреть (телефон/ПК), нужна ли запись и какое приложение/модель.",
+    },
+    {
+      title: "Другое",
+      icon: "🛠️",
+      img: "/img/tools.webp",
+      prefill: "Другое устройство: ",
+      hint: "Напишите модель и симптомы. Подскажем варианты и стоит ли ремонтировать.",
+    },
+  ];
 
   return (
     <>
@@ -16,253 +61,228 @@ export default function Home({ phone, tg, wa }) {
       <section className="hero" id="home">
         <div className="wrap heroGrid">
           <div>
-            <h1>Ремонт техники и IT-помощь во Владивостоке</h1>
+            <h1>Ремонт техники во Владивостоке</h1>
             <p className="muted">
-              Телевизоры • компьютеры • ноутбуки • принтеры • Wi-Fi/сеть • IP-камеры • другая техника.
+              Быстро, понятно и без лишних услуг. Выезд • согласование цены до работ • гарантия.
             </p>
 
             <div className="cta">
-              <Link className="btn btnPrimary" to="/services">
-                Выбрать услугу
-              </Link>
-              <a className="btn btnGhost" href={`tel:${phoneDigits}`}>
-                Позвонить
-              </a>
-              <a className="btn btnGhost" href={tg} target="_blank" rel="noreferrer">
-                Telegram
-              </a>
-              <a className="btn btnGhost" href={wa} target="_blank" rel="noreferrer">
-                WhatsApp
-              </a>
-            </div>
-
-            <div className="miniInfo">
-              <span className="pill">Согласуем цену до работ</span>
-              <span className="pill">Гарантия</span>
-              <span className="pill">Выезд по городу</span>
-            </div>
-          </div>
-
-          <div className="card">
-            <div className="cardTitle">С чего начать</div>
-            <ol className="miniList">
-              <li>Откройте «Услуги» и выберите проблему</li>
-              <li>Опишите модель и симптомы (1–2 строки)</li>
-              <li>Мы перезвоним или ответим в мессенджере</li>
-            </ol>
-
-            <div className="cta" style={{ marginTop: 12 }}>
               <button
                 className="btn btnPrimary"
                 type="button"
                 onClick={() =>
                   goRequest("", {
                     title: "Заявка",
-                    hint:
-                      "Совет: укажите модель и симптомы. Если ТВ — есть ли звук/мигает ли индикатор. Если ПК/ноут — включается ли и есть ли изображение.",
+                    hint: "Укажите модель и симптомы — мы перезвоним и подскажем варианты.",
                   })
                 }
               >
-                Оставить заявку
+                Вызвать мастера
               </button>
-              <Link className="btn btnGhost" to="/prices">
-                Посмотреть цены
-              </Link>
+
+              <a className="btn btnGhost" href={`tel:${phoneDigits}`}>
+                Позвонить
+              </a>
+
+              <a className="btn btnGhost" href={tg} target="_blank" rel="noreferrer">
+                Telegram
+              </a>
             </div>
+
+            <div className="miniInfo">
+              <span className="pill">Цена до начала работ</span>
+              <span className="pill">Выезд</span>
+              <span className="pill">Гарантия</span>
+            </div>
+          </div>
+
+          {/* Место под hero-картинку */}
+          <div className="heroMedia">
+            {/* если картинки пока нет — оставь так */}
+            <div className="heroMediaCard">
+              <div className="heroMediaTitle">Оставьте заявку — мы перезвоним</div>
+              <div className="muted small">
+                Или выберите устройство ниже — подставим подсказки в заявку.
+              </div>
+              <div className="cta" style={{ marginTop: 12 }}>
+                <Link className="btn btnGhost" to="/services">
+                  Услуги
+                </Link>
+                <Link className="btn btnGhost" to="/prices">
+                  Цены
+                </Link>
+              </div>
+            </div>
+            {/* Позже можешь заменить на <img className="heroImg" src="/img/hero.webp" alt="" /> */}
           </div>
         </div>
       </section>
 
-      {/* TRUST */}
+      {/* DEVICE TILES */}
+      <section className="section">
+        <div className="wrap">
+          <h2>Выберите устройство</h2>
+          <p className="muted">Нажмите на плитку — откроется заявка с подсказками.</p>
+
+          <div className="deviceGrid">
+            {tiles.map((t) => (
+              <button
+                key={t.title}
+                type="button"
+                className="deviceTile"
+                onClick={() => goRequest(t.prefill, { title: t.title, icon: t.icon, hint: t.hint })}
+              >
+                <div className="deviceTop">
+                  <div className="deviceIcon">{t.icon}</div>
+                  <div className="deviceTitle">{t.title}</div>
+                </div>
+
+                {/* если картинки нет — просто не будет показываться, но место останется */}
+                <div className="deviceImgWrap">
+                  <img
+                    className="deviceImg"
+                    src={t.img}
+                    alt=""
+                    loading="lazy"
+                    onError={(e) => {
+                      // если файла нет — скрываем img, чтобы не было “битой картинки”
+                      e.currentTarget.style.display = "none";
+                    }}
+                  />
+                </div>
+
+                <div className="deviceHint muted small">Открыть заявку →</div>
+              </button>
+            ))}
+          </div>
+
+          <div className="cta" style={{ marginTop: 12 }}>
+            <Link className="btn btnPrimary" to="/services">
+              Все услуги
+            </Link>
+            <Link className="btn btnGhost" to="/prices">
+              Цены
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* TRUST (compact) */}
       <section className="section">
         <div className="wrap">
           <h2>Почему нам доверяют</h2>
-
           <div className="trustGrid">
             <div className="trustCard">
               <div className="trustIcon">✅</div>
-              <div className="trustTitle">Цена до начала работ</div>
-              <div className="trustText">
-                Перед ремонтом озвучиваем варианты и согласуем стоимость. Без «внезапных доплат».
-              </div>
+              <div className="trustTitle">Цена заранее</div>
+              <div className="trustText">Согласуем стоимость до начала работ.</div>
             </div>
-
             <div className="trustCard">
               <div className="trustIcon">🧾</div>
-              <div className="trustTitle">Понятно объясняем</div>
-              <div className="trustText">
-                Скажем простыми словами, что сломалось и почему. Подберём решение под бюджет.
-              </div>
+              <div className="trustTitle">Понятно</div>
+              <div className="trustText">Объясняем простыми словами — без “умных” слов.</div>
             </div>
-
             <div className="trustCard">
               <div className="trustIcon">🛠️</div>
               <div className="trustTitle">Гарантия</div>
-              <div className="trustText">
-                Даём гарантию на выполненные работы. Если вопрос повторится — разберёмся.
-              </div>
+              <div className="trustText">На выполненные работы предоставляем гарантию.</div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ABOUT / HOW WE WORK (for top button) */}
+      {/* ABOUT + FAQ collapsed */}
       <section className="section" id="about">
         <div className="wrap">
-          <h2>Как работаем</h2>
-
-          <div className="steps">
-            <div className="step">
-              <div className="stepNum">1</div>
-              <div>
-                <div className="stepTitle">Заявка</div>
-                <div className="muted">Звонок или сообщение. Уточняем модель и симптомы.</div>
-              </div>
-            </div>
-
-            <div className="step">
-              <div className="stepNum">2</div>
-              <div>
-                <div className="stepTitle">Диагностика</div>
-                <div className="muted">Понимаем причину и предлагаем варианты решения.</div>
-              </div>
-            </div>
-
-            <div className="step">
-              <div className="stepNum">3</div>
-              <div>
-                <div className="stepTitle">Согласование цены</div>
-                <div className="muted">Назовём стоимость до начала работ — вы решаете, делать или нет.</div>
-              </div>
-            </div>
-
-            <div className="step">
-              <div className="stepNum">4</div>
-              <div>
-                <div className="stepTitle">Ремонт / настройка</div>
-                <div className="muted">Делаем, проверяем результат, даём рекомендации.</div>
-              </div>
-            </div>
-
-            <div className="step">
-              <div className="stepNum">5</div>
-              <div>
-                <div className="stepTitle">Гарантия</div>
-                <div className="muted">На выполненные работы предоставляем гарантию.</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="card" style={{ marginTop: 12 }}>
-            <div className="cardTitle">Важно</div>
-            <p className="muted" style={{ margin: 0 }}>
-              Если ремонт нецелесообразен — честно скажем. Мы не «уговариваем любой ценой».
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ */}
-      <section className="section" id="faq">
-        <div className="wrap">
-          <h2>Частые вопросы</h2>
+          <h2>Как работаем и ответы на вопросы</h2>
 
           <div className="faq">
-            <details className="faqItem">
-              <summary>Выезд на дом или в сервис?</summary>
-              <p className="muted">
-                Настройка, обслуживание и часть ремонтов — на месте. Если нужен сложный ремонт — согласуем вариант.
-              </p>
+            <details className="faqItem" open>
+              <summary>Как мы работаем</summary>
+              <div className="steps" style={{ marginTop: 10 }}>
+                <div className="step">
+                  <div className="stepNum">1</div>
+                  <div>
+                    <div className="stepTitle">Заявка</div>
+                    <div className="muted">Звонок или сообщение. Уточняем модель и симптомы.</div>
+                  </div>
+                </div>
+                <div className="step">
+                  <div className="stepNum">2</div>
+                  <div>
+                    <div className="stepTitle">Диагностика</div>
+                    <div className="muted">Понимаем причину и предлагаем варианты.</div>
+                  </div>
+                </div>
+                <div className="step">
+                  <div className="stepNum">3</div>
+                  <div>
+                    <div className="stepTitle">Согласование</div>
+                    <div className="muted">Цена до начала работ — без сюрпризов.</div>
+                  </div>
+                </div>
+                <div className="step">
+                  <div className="stepNum">4</div>
+                  <div>
+                    <div className="stepTitle">Решаем</div>
+                    <div className="muted">Ремонт/настройка + проверка результата.</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="card" style={{ marginTop: 12 }}>
+                <div className="cardTitle">Важно</div>
+                <p className="muted" style={{ margin: 0 }}>
+                  Если ремонт нецелесообразен — честно скажем. Без давления.
+                </p>
+              </div>
             </details>
 
             <details className="faqItem">
               <summary>Сколько стоит ремонт?</summary>
               <p className="muted">
-                Точная цена понятна после диагностики. Мы объясняем причину и называем цену до начала работ.
+                Точная цена понятна после диагностики. Мы называем стоимость до начала работ.
+              </p>
+            </details>
+
+            <details className="faqItem">
+              <summary>Выезд на дом или в сервис?</summary>
+              <p className="muted">
+                Многие задачи решаем на месте. Если нужен сложный ремонт — согласуем вариант.
               </p>
             </details>
 
             <details className="faqItem">
               <summary>Можно просто консультацию?</summary>
               <p className="muted">
-                Да. Напишите модель и симптомы — подскажем варианты и что можно сделать.
-              </p>
-            </details>
-
-            <details className="faqItem">
-              <summary>Нужны ли документы/чек?</summary>
-              <p className="muted">
-                По договорённости. Для “офиса/организаций” обычно делаем документы и список работ.
+                Да. Напишите модель и симптомы — подскажем варианты и ориентир по цене.
               </p>
             </details>
           </div>
 
           <div className="cta" style={{ marginTop: 12 }}>
-            <Link className="btn btnPrimary" to="/services">
-              Перейти к услугам
-            </Link>
             <button
-              className="btn btnGhost"
+              className="btn btnPrimary"
               type="button"
               onClick={() =>
                 goRequest("", {
                   title: "Заявка",
-                  hint:
-                    "Совет: укажите модель и симптомы. Чем точнее описание — тем быстрее ответим.",
+                  hint: "Укажите модель и симптомы — мы перезвоним.",
                 })
               }
             >
               Оставить заявку
             </button>
+            <a className="btn btnGhost" href={`tel:${phoneDigits}`}>
+              Позвонить
+            </a>
           </div>
         </div>
       </section>
 
-      {/* CALL anchor for header buttons */}
-      <section className="section" id="call">
-        <div className="wrap">
-          <h2>Вызвать мастера</h2>
-          <div className="card">
-            <p className="muted" style={{ marginTop: 0 }}>
-              Быстрее всего — выбрать категорию в «Услугах» и оставить заявку: мы получим её в Telegram-группу.
-            </p>
-            <div className="cta">
-              <Link className="btn btnPrimary" to="/services">
-                Выбрать услугу
-              </Link>
-              <a className="btn btnGhost" href={`tel:${phoneDigits}`}>
-                Позвонить
-              </a>
-              <a className="btn btnGhost" href={tg} target="_blank" rel="noreferrer">
-                Telegram
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CONSULT anchor for header buttons */}
-      <section className="section" id="consult">
-        <div className="wrap">
-          <h2>Консультация</h2>
-          <div className="card">
-            <p className="muted" style={{ marginTop: 0 }}>
-              Напишите модель и симптомы — ответим, какие есть варианты и примерный ориентир по цене.
-            </p>
-            <div className="cta">
-              <a className="btn btnPrimary" href={tg} target="_blank" rel="noreferrer">
-                Telegram
-              </a>
-              <a className="btn btnGhost" href={wa} target="_blank" rel="noreferrer">
-                WhatsApp
-              </a>
-              <Link className="btn btnGhost" to="/request">
-                Оставить заявку
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* anchors to keep old header links working if needed */}
+      <section className="section" id="call" style={{ paddingTop: 0 }} />
+      <section className="section" id="consult" style={{ paddingTop: 0 }} />
     </>
   );
 }
