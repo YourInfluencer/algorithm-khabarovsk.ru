@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import "../styles/Services.css";
 
 const QUICK = [
   { label: "ТВ не включается", prefill: "Телевизор не включается. (индикатор / щелчки / мигает)", cat: "Телевизоры" },

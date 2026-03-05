@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import "../styles/Home.css";
 
 export default function Home({ phone, tg, wa, onOpenContacts }) {
   const nav = useNavigate();
@@ -9,12 +10,11 @@ export default function Home({ phone, tg, wa, onOpenContacts }) {
     nav("/request", { state: { prefill, ...meta } });
   }
 
-  // Плитки устройств (под них потом поставишь картинки)
   const tiles = [
     {
       title: "Телевизоры",
       icon: "📺",
-      img: "/img/tv.webp", // положишь позже
+      img: "/img/tv.webp",
       prefill: "Телевизоры: ",
       hint: "Укажите модель ТВ, есть ли звук, как ведёт себя индикатор, были ли щелчки. Если можете — фото/видео.",
     },
@@ -37,14 +37,14 @@ export default function Home({ phone, tg, wa, onOpenContacts }) {
       icon: "📶",
       img: "/img/wifi.webp",
       prefill: "Wi-Fi/интернет: ",
-      hint: "Укажите модель роутера, где плохо ловит, сколько устройств и что именно происходит (обрывы/нет интернета).",
+      hint: "Укажите модель роутера, где плохо ловит, сколько устройств и что происходит (обрывы/нет интернета).",
     },
     {
       title: "IP-камеры",
       icon: "📷",
       img: "/img/cctv.webp",
       prefill: "IP-камеры: ",
-      hint: "Укажите сколько камер, где нужно смотреть (телефон/ПК), нужна ли запись и какое приложение/модель.",
+      hint: "Сколько камер, где нужно смотреть (телефон/ПК), нужна ли запись и какая модель/приложение.",
     },
     {
       title: "Другое",
@@ -63,44 +63,54 @@ export default function Home({ phone, tg, wa, onOpenContacts }) {
           <div>
             <h1>Ремонт техники во Владивостоке</h1>
             <p className="muted">
-              Быстро, понятно и без лишних услуг. Выезд • согласование цены до работ • гарантия.
+              Быстро и понятно: выезд • согласование цены до работ • гарантия.
             </p>
 
             <div className="cta">
               <button className="btn btnPrimary" type="button" onClick={onOpenContacts}>
                 Вызвать мастера
               </button>
-
-              <Link className="btn btnGhost" to="/services">
-                Услуги
-              </Link>
-
-              <Link className="btn btnGhost" to="/prices">
-                Цены
-              </Link>
+              <Link className="btn btnGhost" to="/services">Услуги</Link>
+              <Link className="btn btnGhost" to="/prices">Цены</Link>
             </div>
 
             <div className="miniInfo">
               <span className="pill">Цена до начала работ</span>
-              <span className="pill">Выезд</span>
+              <span className="pill">Выезд по городу</span>
               <span className="pill">Гарантия</span>
+              <span className="pill">Без скрытых доплат</span>
+            </div>
+
+            <div className="freeConsult">
+              <span className="freeConsultIcon">💬</span>
+              <span><b>Консультация по телефону и в мессенджере — бесплатно!</b></span>
             </div>
           </div>
 
-          {/* Место под hero-картинку */}
+          {/* HERO справа */}
           <div className="heroMedia">
             <div className="heroMediaCard">
-              <div className="heroMediaTitle">Оставьте заявку — мы перезвоним</div>
-              <div className="muted small">
-                Или выберите устройство ниже — подставим подсказки в заявку.
+              <div>
+                <div className="heroMediaTitle">Оставьте заявку — мы перезвоним</div>
+                <div className="muted small">
+                  Или выберите устройство ниже — подставим подсказки в заявку.
+                </div>
+
+                <div className="heroSteps">
+                  <div className="heroStep"><span className="heroStepNum">1</span>Выберите устройство</div>
+                  <div className="heroStep"><span className="heroStepNum">2</span>Коротко опишите проблему</div>
+                  <div className="heroStep"><span className="heroStepNum">3</span>Получите варианты и цену</div>
+                </div>
               </div>
+
               <div className="cta" style={{ marginTop: 12 }}>
-                <Link className="btn btnGhost" to="/services">
-                  Услуги
-                </Link>
-                <Link className="btn btnGhost" to="/prices">
-                  Цены
-                </Link>
+                <button className="btn btnPrimary" type="button" onClick={() => goRequest("", {
+                  title: "Заявка",
+                  hint: "Укажите модель и симптомы. Чем точнее — тем быстрее ответим.",
+                })}>
+                  Оставить заявку
+                </button>
+                <Link className="btn btnGhost" to="/prices">Посмотреть цены</Link>
               </div>
             </div>
           </div>
@@ -113,16 +123,6 @@ export default function Home({ phone, tg, wa, onOpenContacts }) {
           <h2>Выберите устройство</h2>
           <p className="muted">Нажмите на плитку — откроется заявка с подсказками.</p>
 
-          <div className="flow">
-            <div className="flowStep"><span className="flowNum">1</span>Выберите устройство</div>
-            <div className="flowArrow">→</div>
-            <div className="flowStep"><span className="flowNum">2</span>Выберите проблему</div>
-            <div className="flowArrow">→</div>
-            <div className="flowStep"><span className="flowNum">3</span>Отправьте заявку</div>
-            <div className="flowArrow">→</div>
-            <div className="flowStep"><span className="flowNum">4</span>Мы перезвоним</div>
-          </div>
-
           <div className="deviceGrid">
             {tiles.map((t) => (
               <button
@@ -134,6 +134,7 @@ export default function Home({ phone, tg, wa, onOpenContacts }) {
                 <div className="deviceTop">
                   <div className="deviceIcon">{t.icon}</div>
                   <div className="deviceTitle">{t.title}</div>
+                  <div className="deviceArrow">→</div>
                 </div>
 
                 <div className="deviceImgWrap">
@@ -142,29 +143,23 @@ export default function Home({ phone, tg, wa, onOpenContacts }) {
                     src={t.img}
                     alt=""
                     loading="lazy"
-                    onError={(e) => {
-                      e.currentTarget.style.display = "none";
-                    }}
+                    onError={(e) => { e.currentTarget.style.display = "none"; }}
                   />
                 </div>
 
-                <div className="deviceHint muted small">Открыть заявку →</div>
+                <div className="muted small deviceSub">Откроем форму с подсказками</div>
               </button>
             ))}
           </div>
 
           <div className="cta" style={{ marginTop: 12 }}>
-            <Link className="btn btnPrimary" to="/services">
-              Все услуги
-            </Link>
-            <Link className="btn btnGhost" to="/prices">
-              Цены
-            </Link>
+            <Link className="btn btnPrimary" to="/services">Все услуги</Link>
+            <Link className="btn btnGhost" to="/prices">Цены</Link>
           </div>
         </div>
       </section>
 
-      {/* TRUST (compact) */}
+      {/* TRUST */}
       <section className="section">
         <div className="wrap">
           <h2>Почему нам доверяют</h2>
@@ -188,7 +183,7 @@ export default function Home({ phone, tg, wa, onOpenContacts }) {
         </div>
       </section>
 
-      {/* ABOUT + FAQ collapsed */}
+      {/* ABOUT + FAQ */}
       <section className="section" id="about">
         <div className="wrap">
           <h2>Как работаем и ответы на вопросы</h2>
@@ -197,89 +192,37 @@ export default function Home({ phone, tg, wa, onOpenContacts }) {
             <details className="faqItem" open>
               <summary>Как мы работаем</summary>
               <div className="steps" style={{ marginTop: 10 }}>
-                <div className="step">
-                  <div className="stepNum">1</div>
-                  <div>
-                    <div className="stepTitle">Заявка</div>
-                    <div className="muted">Звонок или сообщение. Уточняем модель и симптомы.</div>
-                  </div>
-                </div>
-                <div className="step">
-                  <div className="stepNum">2</div>
-                  <div>
-                    <div className="stepTitle">Диагностика</div>
-                    <div className="muted">Понимаем причину и предлагаем варианты.</div>
-                  </div>
-                </div>
-                <div className="step">
-                  <div className="stepNum">3</div>
-                  <div>
-                    <div className="stepTitle">Согласование</div>
-                    <div className="muted">Цена до начала работ — без сюрпризов.</div>
-                  </div>
-                </div>
-                <div className="step">
-                  <div className="stepNum">4</div>
-                  <div>
-                    <div className="stepTitle">Решаем</div>
-                    <div className="muted">Ремонт/настройка + проверка результата.</div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="card" style={{ marginTop: 12 }}>
-                <div className="cardTitle">Важно</div>
-                <p className="muted" style={{ margin: 0 }}>
-                  Если ремонт нецелесообразен — честно скажем. Без давления.
-                </p>
+                <div className="step"><div className="stepNum">1</div><div><div className="stepTitle">Заявка</div><div className="muted">Уточняем модель и симптомы.</div></div></div>
+                <div className="step"><div className="stepNum">2</div><div><div className="stepTitle">Диагностика</div><div className="muted">Понимаем причину и предлагаем варианты.</div></div></div>
+                <div className="step"><div className="stepNum">3</div><div><div className="stepTitle">Согласование</div><div className="muted">Цена до начала работ — без сюрпризов.</div></div></div>
+                <div className="step"><div className="stepNum">4</div><div><div className="stepTitle">Решаем</div><div className="muted">Ремонт/настройка + проверка результата.</div></div></div>
               </div>
             </details>
 
             <details className="faqItem">
               <summary>Сколько стоит ремонт?</summary>
-              <p className="muted">
-                Точная цена понятна после диагностики. Мы называем стоимость до начала работ.
-              </p>
+              <p className="muted">Точная цена понятна после диагностики. Мы называем стоимость до начала работ.</p>
             </details>
 
             <details className="faqItem">
               <summary>Выезд на дом или в сервис?</summary>
-              <p className="muted">
-                Многие задачи решаем на месте. Если нужен сложный ремонт — согласуем вариант.
-              </p>
+              <p className="muted">Многие задачи решаем на месте. Если нужен сложный ремонт — согласуем вариант.</p>
             </details>
 
             <details className="faqItem">
               <summary>Можно просто консультацию?</summary>
-              <p className="muted">
-                Да. Напишите модель и симптомы — подскажем варианты и ориентир по цене.
-              </p>
+              <p className="muted"><b>Да — бесплатно.</b> Напишите модель и симптомы, подскажем варианты.</p>
             </details>
           </div>
 
           <div className="cta" style={{ marginTop: 12 }}>
-            <button
-              className="btn btnPrimary"
-              type="button"
-              onClick={() =>
-                goRequest("", {
-                  title: "Заявка",
-                  hint: "Укажите модель и симптомы — мы перезвоним.",
-                })
-              }
-            >
-              Оставить заявку
+            <button className="btn btnPrimary" type="button" onClick={onOpenContacts}>
+              Вызвать мастера
             </button>
-            <a className="btn btnGhost" href={`tel:${phoneDigits}`}>
-              Позвонить
-            </a>
+            <Link className="btn btnGhost" to="/services">Услуги</Link>
           </div>
         </div>
       </section>
-
-      {/* anchors to keep old header links working if needed */}
-      <section className="section" id="call" style={{ paddingTop: 0 }} />
-      <section className="section" id="consult" style={{ paddingTop: 0 }} />
     </>
   );
 }

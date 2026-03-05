@@ -1,0 +1,13 @@
+/* =========================
+   LAYOUT (only layout!)
+   ========================= */
+
+.appShell{
+  min-height: 100dvh;
+  display:flex;
+  flex-direction:column;
+}
+
+.appMain{
+  flex: 1;
+}

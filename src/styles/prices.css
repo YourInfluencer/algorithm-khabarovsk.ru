@@ -1,0 +1,32 @@
+/* =========================
+   PRICES
+   ========================= */
+
+.priceGrid{
+  display:grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap:12px;
+  margin-top:12px;
+}
+
+@media (max-width: 1100px){
+  .priceGrid{ grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 520px){
+  .priceGrid{ grid-template-columns: 1fr; }
+}
+
+.priceCard{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--r);
+  padding:14px;
+}
+
+.priceCardHighlight{
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+  background: color-mix(in srgb, var(--accent) 8%, var(--surface));
+}
+
+.priceName{font-weight:900;margin-bottom:6px}
+.priceFrom{font-weight:900;font-size:18px;margin-bottom:8px;color:var(--text)}

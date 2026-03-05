@@ -1,0 +1,55 @@
+.topbar{
+  position:sticky; top:0; z-index:50;
+  width:100%;
+  background: color-mix(in srgb, var(--bg) 90%, transparent);
+  backdrop-filter: blur(14px);
+  border-bottom:1px solid var(--border);
+}
+.topbarInner{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:12px 0;
+}
+.brand{display:flex;align-items:center;gap:10px;font-weight:900;white-space:nowrap}
+.brandText{letter-spacing:.2px}
+.brandBtn{ background:transparent;border:0;padding:0;cursor:pointer;color:inherit;font:inherit; }
+
+.navDesktop{display:flex;align-items:center;gap:12px}
+.navLink{
+  color:var(--text);
+  opacity:.88;
+  font-weight:800;
+  padding:9px 12px;
+  border-radius:14px;
+  border:1px solid transparent;
+}
+.navLink:hover{
+  opacity:1;
+  background: color-mix(in srgb, var(--text) 8%, transparent);
+  border-color: var(--border);
+}
+.navBtn{
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  font: inherit;
+  color:var(--text);
+  opacity:.88;
+  font-weight:800;
+  padding:9px 12px;
+  border-radius:14px;
+}
+.navBtn:hover{
+  opacity:1;
+  background: color-mix(in srgb, var(--text) 8%, transparent);
+  border-color: var(--border);
+}
+
+.navMobile{display:none;align-items:center;gap:10px}
+
+@media (max-width: 820px){
+  .navDesktop{display:none}
+  .navMobile{display:flex}
+}

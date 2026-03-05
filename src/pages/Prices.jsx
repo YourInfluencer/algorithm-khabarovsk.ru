@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "../styles/Prices.css";
 
 function digitsOnly(s) {
   return String(s || "").replace(/[^\d]/g, "");

@@ -1,0 +1,51 @@
+.modalOverlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  z-index: 200;
+  animation: fadeIn .16s ease-out;
+}
+.modalCard{
+  width: min(560px, 100%);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.35);
+  animation: popIn .18s ease-out;
+}
+.modalHead{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:12px;
+}
+.modalTitle{font-size:18px;font-weight:900}
+
+.contactLinks{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:14px;
+}
+.contactLink{
+  padding:10px 12px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  color: var(--text);
+  font-weight:800;
+  background: transparent;
+}
+
+.orDivider{display:flex;align-items:center;gap:10px;margin:12px 0 10px}
+.orLine{height:1px;background:var(--border);flex:1}
+.orText{color:var(--muted);font-weight:800;font-size:13px}
+.formTitle{font-weight:900;margin:10px 0 10px}
+
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes popIn{from{transform:translateY(8px) scale(.98);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}

@@ -1,0 +1,17 @@
+.toast{
+  position: fixed;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(560px, calc(100% - 28px));
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  backdrop-filter: blur(14px);
+  font-weight: 900;
+  z-index: 500;
+  box-shadow: 0 16px 40px rgba(0,0,0,.18);
+}
+.toast-ok{ border-color: color-mix(in srgb, #22c55e 45%, var(--border)); }
+.toast-err{ border-color: color-mix(in srgb, #ef4444 45%, var(--border)); }
