@@ -1,17 +1,19 @@
+import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 export default function Header({ theme, onToggleTheme, onOpenContacts }) {
   const location = useLocation();
   const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   function goHomeTop() {
+    setMenuOpen(false);
     if (location.pathname === "/") {
       const el = document.getElementById("home");
       if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
       else window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
-
     navigate("/");
     setTimeout(() => {
       const el = document.getElementById("home");
@@ -23,48 +25,46 @@ export default function Header({ theme, onToggleTheme, onOpenContacts }) {
   return (
     <header className="topbar">
       <div className="wrap topbarInner">
-        {/* Лого + тема рядом */}
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <button className="brand brandBtn" type="button" onClick={goHomeTop} aria-label="На главную">
             <div className="brandText">Лого</div>
           </button>
 
-          <button
-            className="btnIcon"
-            type="button"
-            onClick={onToggleTheme}
-            aria-label="Переключить тему"
-            title="Светлая / тёмная"
-          >
+          <button className="btnIcon" type="button" onClick={onToggleTheme} aria-label="Переключить тему">
             {theme === "light" ? "☀️" : "🌙"}
           </button>
         </div>
 
-        {/* Навигация */}
         <nav className="navDesktop" aria-label="Навигация">
-          <button className="navLink navBtn" type="button" onClick={goHomeTop}>
-            Главная
-          </button>
-
+          <button className="navLink navBtn" type="button" onClick={goHomeTop}>Главная</button>
           <Link className="navLink" to="/services">Услуги</Link>
           <Link className="navLink" to="/prices">Цены</Link>
           <Link className="navLink" to="/consult">Консультация</Link>
           <Link className="navLink" to="/request">Вызвать мастера</Link>
-
-          <button className="btn btnPrimary" type="button" onClick={onOpenContacts}>
-            Контакты
-          </button>
+          <button className="btn btnPrimary" type="button" onClick={onOpenContacts}>Контакты</button>
         </nav>
 
-        {/* Мобилка (минимально) */}
         <div className="navMobile">
+          <button className="btn btnGhost" type="button" onClick={() => setMenuOpen((v) => !v)}>
+            Меню
+          </button>
           <button className="btn btnPrimary" type="button" onClick={onOpenContacts}>
             Контакты
           </button>
         </div>
       </div>
 
-      <div className="topbarDivider" />
+      {menuOpen && (
+        <div className="mobileMenu" onMouseDown={() => setMenuOpen(false)}>
+          <div className="wrap mobileMenuInner" onMouseDown={(e) => e.stopPropagation()}>
+            <button className="mobileLink mobileBtn" type="button" onClick={goHomeTop}>Главная</button>
+            <Link className="mobileLink" to="/services" onClick={() => setMenuOpen(false)}>Услуги</Link>
+            <Link className="mobileLink" to="/prices" onClick={() => setMenuOpen(false)}>Цены</Link>
+            <Link className="mobileLink" to="/consult" onClick={() => setMenuOpen(false)}>Консультация</Link>
+            <Link className="mobileLink" to="/request" onClick={() => setMenuOpen(false)}>Вызвать мастера</Link>
+          </div>
+        </div>
+      )}
     </header>
   );
 }

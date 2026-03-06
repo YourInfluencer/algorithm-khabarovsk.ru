@@ -355,7 +355,7 @@
   .trustGrid{ grid-template-columns: repeat(2, 1fr); }
 }
 
-@media (max-width: 700px){
+@media (max-width: 1024px){
   .heroGrid{ grid-template-columns: 1fr; gap:12px; }
   .heroMediaCard{ min-height:auto; }
 
