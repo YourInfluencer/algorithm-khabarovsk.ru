@@ -30,3 +30,61 @@
 
 .priceName{font-weight:900;margin-bottom:6px}
 .priceFrom{font-weight:900;font-size:18px;margin-bottom:8px;color:var(--text)}
+
+/* ===== Prices: highlight “Важно про цены” (без бейджа/шапки) ===== */
+.priceNote{
+  position: relative;
+  border: 2px solid color-mix(in srgb, var(--accent) 55%, var(--border));
+  background: color-mix(in srgb, var(--accent) 12%, var(--surface));
+  box-shadow: 0 22px 60px rgba(0,0,0,.14);
+  overflow: hidden;
+}
+
+/* мягкое внутреннее свечение (по желанию, можно удалить) */
+.priceNote::after{
+  content:"";
+  position:absolute;
+  inset:-40px;
+  background:
+    radial-gradient(420px 220px at 18% 10%, color-mix(in srgb, var(--accent) 28%, transparent), transparent 60%),
+    radial-gradient(420px 260px at 85% 40%, color-mix(in srgb, var(--accent) 18%, transparent), transparent 62%);
+  pointer-events:none;
+  opacity:.65;
+}
+
+/* одна левая акцентная полоса */
+.priceNote::before{
+  content:"";
+  position:absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  background: color-mix(in srgb, var(--accent) 90%, transparent);
+}
+
+
+/* заголовок */
+.priceNoteTitle{
+  position: relative;
+  z-index: 1;
+  font-weight: 900;
+  font-size: 16px;
+  margin: 0 0 10px;
+}
+
+/* текст заметнее */
+.priceNote p,
+.priceNote .muted{
+  position: relative;
+  z-index: 1;
+  color: color-mix(in srgb, var(--text) 86%, transparent);
+  line-height: 1.45;
+}
+
+/* dark: чуть “приглушённее”, но заметно */
+:root[data-theme="dark"] .priceNote{
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+  background: color-mix(in srgb, var(--accent) 10%, var(--surface));
+  box-shadow: 0 26px 70px rgba(0,0,0,.35);
+}

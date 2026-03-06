@@ -114,8 +114,8 @@ export default function Prices() {
           </div>
 
           <div className="section" style={{ paddingTop: 0 }}>
-            <div className="card">
-              <div className="cardTitle">Важно про цены</div>
+            <div className="card priceNote">
+              <div className="priceNoteTitle">Важно про цены</div>
               <p className="muted" style={{ margin: 0 }}>
                 Не гонитесь за слишком низкой ценой у «мастеров» и на сайтах. Нередко за этим стоят
                 скрытые доплаты и недомолвки, а итоговый счёт получается выше ожидаемого.

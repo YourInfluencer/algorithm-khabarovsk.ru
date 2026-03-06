@@ -9,6 +9,14 @@
   margin-top:12px;
 }
 
+.quickCtaRow{
+  display:flex;
+  align-items:center;   /* ✅ выравнивание по центру */
+  gap:12px;
+  margin-top:12px;
+  flex-wrap:wrap;
+}
+
 .quickBtn{
   display:flex;
   align-items:center;
