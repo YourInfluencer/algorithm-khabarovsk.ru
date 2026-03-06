@@ -97,6 +97,26 @@ export default function Prices() {
             </div>
           </div>
 
+          {/* PHOTO BANNER (между прайсом и пояснениями) */}
+          <div style={{ paddingTop: 14 }}>
+            <div className="wrap">
+              <div className="photoBanner photoBannerSm">
+                <img
+                  className="photoBannerImg"
+                  src="/img/prices-banner.webp"
+                  alt="Диагностика и согласование цены"
+                  loading="lazy"
+                />
+                <div className="photoBannerOverlay">
+                  <div className="photoBannerTitle">Цену согласуем до начала работ</div>
+                  <div className="photoBannerText">
+                    Сразу называем варианты и стоимость — без “внезапных” доплат.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div className="section" style={{ paddingTop: 14 }}>
             <div className="card">
               <div className="cardTitle">Что влияет на стоимость</div>
@@ -140,7 +160,7 @@ export default function Prices() {
           </div>
 
           <div className="section" style={{ paddingTop: 0 }}>
-            <div className="card">
+            <div className="card pricesLeadCard">
               <div className="cardTitle">Оставьте заявку — мы перезвоним</div>
               <p className="muted">
                 Напишите модель и что случилось — мы скажем варианты и примерную вилку цены.

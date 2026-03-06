@@ -141,6 +141,20 @@ export default function Services() {
           </div>
         </div>
 
+        {/* PHOTO BANNER (services) */}
+        <div className="photoBanner photoBannerServices" aria-label="Сервисный ремонт">
+          <img
+            className="photoBannerImg"
+            src="/img/banner-services.webp"
+            alt="Мастер аккуратно ремонтирует электронику"
+            loading="lazy"
+          />
+          <div className="photoBannerOverlay">
+            <div className="photoBannerTitle">Диагностика → варианты → согласование</div>
+            <div className="photoBannerText">Понятно объясним и назовём цену до начала работ.</div>
+          </div>
+        </div>
+
         <div className="servicesGrid">
           {CATS.map((c) => (
             <div className="serviceCard2" key={c.title}>

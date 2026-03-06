@@ -78,7 +78,7 @@
 }
 
 /* iPad / планшеты: даём padding по бокам, чтобы не липло */
-@media (max-width: 1024px){
+@media (max-width: 1135px){
   .topbarInner{
     padding-left: 16px;
     padding-right: 16px;
