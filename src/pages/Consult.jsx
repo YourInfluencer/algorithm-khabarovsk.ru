@@ -1,5 +1,6 @@
 // src/pages/Consult.jsx
 import { useEffect, useMemo, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import "../styles/Consult.css";
 
 const LS_KEY = "consult_template_v2";
@@ -47,8 +48,9 @@ function replaceLine(text, label, value) {
 function applyPreset(prevText, preset) {
   let t = prevText;
 
-  // миграция на всякий случай
+  // миграции на всякий
   t = t.replace(/^Адрес\/район:\s*.*$/gmi, "Адрес:");
+  t = t.replace(/^Устройство\s*—\s*/gmi, "Устройство: ");
 
   // замена полей (НЕ добавление в конец)
   t = replaceLine(t, "Устройство", preset.device);
@@ -100,6 +102,14 @@ export default function Consult({ tg, wa, onOpenContacts }) {
 
   return (
     <section className="section">
+      <Helmet>
+        <title>Консультация — ремонт техники во Владивостоке</title>
+        <meta
+          name="description"
+          content="Бесплатная консультация по ремонту техники во Владивостоке: напишите модель, симптомы и после чего началось — подскажем варианты и цену."
+        />
+      </Helmet>
+
       <div className="wrap">
         <h1 className="pageTitle">Консультация</h1>
         <p className="muted">
@@ -174,10 +184,8 @@ export default function Consult({ tg, wa, onOpenContacts }) {
         <div className="consultBreak" aria-hidden="true">
           <div className="consultBreakCard">
             <div className="consultBreakOverlay">
-              <div className="consultInlinePhotoText">
-                <div className="consultBreakTitle">Объясним просто и без лишних сложностей</div>
-                <div className="consultBreakText">Подскажем, что делать дальше, и договоримся по времени.</div>
-              </div>
+              <div className="consultBreakTitle">Объясним просто и без лишних сложностей</div>
+              <div className="consultBreakText">Подскажем, что делать дальше, и договоримся по времени.</div>
             </div>
           </div>
         </div>
@@ -199,34 +207,29 @@ export default function Consult({ tg, wa, onOpenContacts }) {
 
           {/* RIGHT (stack) */}
           <div className="consultBottomRight">
-            {/* TEXT BLOCK */}
             <div className="card">
               <div className="cardTitle">Если не хотите писать</div>
               <p className="muted" style={{ marginTop: 0 }}>
                 Просто нажмите “Контакты” — мы подскажем по телефону и договоримся по времени.
               </p>
+
               <button className="btn btnPrimary" type="button" onClick={onOpenContacts}>
                 Открыть контакты
               </button>
 
               {/* PHOTO (inside same card) */}
               <div className="consultInlinePhoto" aria-hidden="true">
-  <img
-    className="consultInlinePhotoImg"
-    src="/img/consult-call.webp"
-    alt=""
-    loading="lazy"
-  />
+                <img className="consultInlinePhotoImg" src="/img/consult-call.webp" alt="" loading="lazy" />
+                <div className="consultInlinePhotoOverlay" />
+                <div className="consultInlinePhotoText">
+                  <div className="consultInlinePhotoTitle">Можно просто позвонить</div>
+                  <div className="consultInlinePhotoSub">Быстро уточним детали и подскажем по цене</div>
+                </div>
+              </div>
 
-  {/* затемнение для читаемости */}
-  <div className="consultInlinePhotoOverlay" />
-
-  {/* текст поверх */}
-  <div className="consultInlinePhotoText">
-    <div className="consultInlinePhotoTitle">Можно просто позвонить</div>
-    <div className="consultInlinePhotoSub">Быстро уточним детали и подскажем по цене</div>
-  </div>
-</div>
+              <div className="muted small" style={{ marginTop: 10 }}>
+                Если удобнее — можно сразу отправить фото шильдика/экрана в Telegram или WhatsApp.
+              </div>
             </div>
           </div>
         </div>

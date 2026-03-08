@@ -1,5 +1,7 @@
-import { useEffect, useMemo, useState } from "react";
+// src/pages/RequestPage.jsx
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import "../styles/request.css";
 
 function digitsOnly(s) {
@@ -23,9 +25,18 @@ export default function RequestPage({ onLeadSubmit }) {
   const icon = state.icon || "🛠️";
   const items = Array.isArray(state.items) ? state.items : null;
 
+  // чтобы prefill не перетирал уже введённый текст
+  const prefillAppliedRef = useRef(false);
+
   useEffect(() => {
-    // при заходе со страницы услуг — подставляем текст
-    if (typeof state.prefill === "string") setComment(state.prefill);
+    const prefill = state.prefill;
+    if (typeof prefill !== "string") return;
+    if (prefillAppliedRef.current) return;
+    if (comment.trim().length > 0) return;
+
+    setComment(prefill);
+    prefillAppliedRef.current = true;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.prefill]);
 
   const canSend = useMemo(() => digitsOnly(phone).length >= 10, [phone]);
@@ -41,17 +52,21 @@ export default function RequestPage({ onLeadSubmit }) {
 
     try {
       setSending(true);
+
       await onLeadSubmit({
         name,
         phone,
         comment,
         source: "request_page",
+        page: "/request",
+        pageTitle: title,
       });
 
-      setResult(`Заявка отправлена ✅`);
+      setResult("Заявка отправлена ✅");
       setName("");
       setPhone("");
       setComment("");
+      prefillAppliedRef.current = false;
     } catch (err) {
       console.error(err);
       setResult("Не удалось отправить. Проверьте интернет соединение.");
@@ -60,8 +75,19 @@ export default function RequestPage({ onLeadSubmit }) {
     }
   }
 
+  const canonical = "https://yourinfluencer.github.io/#/request";
+
   return (
     <section className="section">
+      <Helmet>
+        <title>{title} — ремонт техники во Владивостоке</title>
+        <meta
+          name="description"
+          content="Оставьте заявку: укажите модель и симптомы — перезвоним, подскажем варианты и согласуем цену до начала работ."
+        />
+        <link rel="canonical" href={canonical} />
+      </Helmet>
+
       <div className="wrap">
         <h1 className="pageTitle">{title}</h1>
 
@@ -82,7 +108,7 @@ export default function RequestPage({ onLeadSubmit }) {
             </ul>
           )}
 
-          {/* ✅ НОВОЕ: правильные переходы */}
+          {/* Переходы */}
           <div className="cta" style={{ marginTop: 12 }}>
             <button
               className="btn btnPrimary"
@@ -112,6 +138,7 @@ export default function RequestPage({ onLeadSubmit }) {
           <form className="leadForm requestForm" onSubmit={submit}>
             <input
               className="input requestName"
+              name="name"
               placeholder="Имя"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -120,6 +147,7 @@ export default function RequestPage({ onLeadSubmit }) {
 
             <input
               className="input requestPhone"
+              name="phone"
               placeholder="Телефон"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
@@ -134,6 +162,7 @@ export default function RequestPage({ onLeadSubmit }) {
 
             <textarea
               className="input requestComment"
+              name="comment"
               placeholder="Модель и симптомы"
               rows={5}
               value={comment}

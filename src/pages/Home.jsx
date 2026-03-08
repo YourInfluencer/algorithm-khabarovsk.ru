@@ -1,5 +1,7 @@
+// src/pages/Home.jsx
 import { useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import "../styles/Home.css";
 import { TvIcon, LaptopIcon, PrinterIcon, WifiIcon, CctvIcon, ToolsIcon } from "../components/Icons.jsx";
 
@@ -58,21 +60,32 @@ export default function Home({ phone, tg, wa, onOpenContacts }) {
 
   return (
     <>
+      <Helmet>
+        <title>Ремонт техники во Владивостоке — выезд, настройка, ремонт</title>
+        <meta
+          name="description"
+          content="Ремонт техники во Владивостоке: телевизоры, ноутбуки, ПК, принтеры, Wi-Fi, IP-камеры. Выезд по городу, согласование цены до работ, гарантия."
+        />
+        <link rel="canonical" href="https://yourinfluencer.github.io/#/" />
+      </Helmet>
+
       {/* HERO */}
       <section className="hero" id="home">
         <div className="wrap heroGrid">
           <div>
             <h1>Ремонт техники во Владивостоке</h1>
-            <p className="muted">
-              Быстро и понятно: выезд • согласование цены до работ • гарантия.
-            </p>
+            <p className="muted">Быстро и понятно: выезд • согласование цены до работ • гарантия.</p>
 
             <div className="cta">
               <button className="btn btnPrimary" type="button" onClick={onOpenContacts}>
                 Вызвать мастера
               </button>
-              <Link className="btn btnGhost" to="/services">Услуги</Link>
-              <Link className="btn btnGhost" to="/prices">Цены</Link>
+              <Link className="btn btnGhost" to="/services">
+                Услуги
+              </Link>
+              <Link className="btn btnGhost" to="/prices">
+                Цены
+              </Link>
             </div>
 
             <div className="miniInfo">
@@ -84,8 +97,26 @@ export default function Home({ phone, tg, wa, onOpenContacts }) {
 
             <div className="freeConsult">
               <span className="freeConsultIcon">💬</span>
-              <span><b>Консультация по телефону и в мессенджере — бесплатно!</b></span>
+              <span>
+                <b>Консультация по телефону и в мессенджере — бесплатно!</b>
+              </span>
             </div>
+
+            {/* Микро-SEO: контакты в тексте (без мусора) */}
+            <p className="muted small" style={{ marginTop: 10 }}>
+              Телефон:{" "}
+              <a className="footerLink" href={`tel:${phoneDigits}`}>
+                {phone}
+              </a>{" "}
+              •{" "}
+              <a className="footerLink" href={tg} target="_blank" rel="noreferrer">
+                Telegram
+              </a>{" "}
+              •{" "}
+              <a className="footerLink" href={wa} target="_blank" rel="noreferrer">
+                WhatsApp
+              </a>
+            </p>
           </div>
 
           {/* HERO справа */}
@@ -98,9 +129,15 @@ export default function Home({ phone, tg, wa, onOpenContacts }) {
                 </div>
 
                 <div className="heroSteps">
-                  <div className="heroStep"><span className="heroStepNum">1</span>Выберите устройство</div>
-                  <div className="heroStep"><span className="heroStepNum">2</span>Коротко опишите проблему</div>
-                  <div className="heroStep"><span className="heroStepNum">3</span>Получите варианты и цену</div>
+                  <div className="heroStep">
+                    <span className="heroStepNum">1</span>Выберите устройство
+                  </div>
+                  <div className="heroStep">
+                    <span className="heroStepNum">2</span>Коротко опишите проблему
+                  </div>
+                  <div className="heroStep">
+                    <span className="heroStepNum">3</span>Получите варианты и цену
+                  </div>
                 </div>
               </div>
 
@@ -108,14 +145,18 @@ export default function Home({ phone, tg, wa, onOpenContacts }) {
                 <button
                   className="btn btnPrimary"
                   type="button"
-                  onClick={() => goRequest("", {
-                    title: "Заявка",
-                    hint: "Укажите модель и симптомы. Чем точнее — тем быстрее ответим.",
-                  })}
+                  onClick={() =>
+                    goRequest("", {
+                      title: "Заявка",
+                      hint: "Укажите модель и симптомы. Чем точнее — тем быстрее ответим.",
+                    })
+                  }
                 >
                   Оставить заявку
                 </button>
-                <Link className="btn btnGhost" to="/prices">Посмотреть цены</Link>
+                <Link className="btn btnGhost" to="/prices">
+                  Посмотреть цены
+                </Link>
               </div>
             </div>
           </div>
@@ -163,7 +204,9 @@ export default function Home({ phone, tg, wa, onOpenContacts }) {
                     src={t.img}
                     alt=""
                     loading="lazy"
-                    onError={(e) => { e.currentTarget.style.display = "none"; }}
+                    onError={(e) => {
+                      e.currentTarget.style.display = "none";
+                    }}
                   />
                 </div>
 
@@ -173,8 +216,15 @@ export default function Home({ phone, tg, wa, onOpenContacts }) {
           </div>
 
           <div className="cta" style={{ marginTop: 36 }}>
-            <Link className="btn btnPrimary" to="/services">Все услуги</Link>
-            <Link className="btn btnGhost" to="/prices">Цены</Link>
+            <Link className="btn btnPrimary" to="/services">
+              Все услуги
+            </Link>
+            <Link className="btn btnGhost" to="/prices">
+              Цены
+            </Link>
+            <Link className="btn btnGhost" to="/reviews">
+              Отзывы
+            </Link>
           </div>
         </div>
       </section>
@@ -211,7 +261,7 @@ export default function Home({ phone, tg, wa, onOpenContacts }) {
           <p className="muted">Несколько реальных фото процесса.</p>
 
           <div className="photoGrid">
-            {["1","2","3","4","5","6"].map((n) => (
+            {["1", "2", "3", "4", "5", "6"].map((n) => (
               <a key={n} className="photoTile" href={`/img/gallery-${n}.webp`} target="_blank" rel="noreferrer">
                 <img className="photoImg" src={`/img/gallery-${n}.webp`} alt="" loading="lazy" />
               </a>
@@ -229,10 +279,34 @@ export default function Home({ phone, tg, wa, onOpenContacts }) {
             <details className="faqItem" open>
               <summary>Как мы работаем</summary>
               <div className="steps" style={{ marginTop: 10 }}>
-                <div className="step"><div className="stepNum">1</div><div><div className="stepTitle">Заявка</div><div className="muted">Уточняем модель и симптомы.</div></div></div>
-                <div className="step"><div className="stepNum">2</div><div><div className="stepTitle">Диагностика</div><div className="muted">Понимаем причину и предлагаем варианты.</div></div></div>
-                <div className="step"><div className="stepNum">3</div><div><div className="stepTitle">Согласование</div><div className="muted">Цена до начала работ — без сюрпризов.</div></div></div>
-                <div className="step"><div className="stepNum">4</div><div><div className="stepTitle">Решаем</div><div className="muted">Ремонт/настройка + проверка результата.</div></div></div>
+                <div className="step">
+                  <div className="stepNum">1</div>
+                  <div>
+                    <div className="stepTitle">Заявка</div>
+                    <div className="muted">Уточняем модель и симптомы.</div>
+                  </div>
+                </div>
+                <div className="step">
+                  <div className="stepNum">2</div>
+                  <div>
+                    <div className="stepTitle">Диагностика</div>
+                    <div className="muted">Понимаем причину и предлагаем варианты.</div>
+                  </div>
+                </div>
+                <div className="step">
+                  <div className="stepNum">3</div>
+                  <div>
+                    <div className="stepTitle">Согласование</div>
+                    <div className="muted">Цена до начала работ — без сюрпризов.</div>
+                  </div>
+                </div>
+                <div className="step">
+                  <div className="stepNum">4</div>
+                  <div>
+                    <div className="stepTitle">Решаем</div>
+                    <div className="muted">Ремонт/настройка + проверка результата.</div>
+                  </div>
+                </div>
               </div>
             </details>
 
@@ -248,7 +322,9 @@ export default function Home({ phone, tg, wa, onOpenContacts }) {
 
             <details className="faqItem">
               <summary>Можно просто консультацию?</summary>
-              <p className="muted"><b>Да — бесплатно.</b> Напишите модель и симптомы, подскажем варианты.</p>
+              <p className="muted">
+                <b>Да — бесплатно.</b> Напишите модель и симптомы, подскажем варианты.
+              </p>
             </details>
           </div>
 
@@ -256,7 +332,9 @@ export default function Home({ phone, tg, wa, onOpenContacts }) {
             <button className="btn btnPrimary" type="button" onClick={onOpenContacts}>
               Вызвать мастера
             </button>
-            <Link className="btn btnGhost" to="/services">Услуги</Link>
+            <Link className="btn btnGhost" to="/services">
+              Услуги
+            </Link>
           </div>
         </div>
       </section>

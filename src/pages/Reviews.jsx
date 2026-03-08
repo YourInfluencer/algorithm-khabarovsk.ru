@@ -1,4 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
+// src/pages/Reviews.jsx
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import "../styles/Reviews.css";
 import { REVIEWS } from "../data/reviews.data";
 
@@ -51,7 +53,7 @@ function ensureStartTime() {
 function tooFast() {
   const t = Number(localStorage.getItem(LS_REVIEW_START) || 0);
   if (!t) return false;
-  return (Date.now() - t) < MIN_FILL_MS;
+  return Date.now() - t < MIN_FILL_MS;
 }
 
 function clearStartTime() {
@@ -68,16 +70,21 @@ export default function Reviews({ onLeadSubmit }) {
   // простая “капча”: галочка
   const [human, setHuman] = useState(false);
 
-  // чтобы текст “подождите N сек” обновлялся
-  const [tick, setTick] = useState(0);
+  // чтобы кулдаун “тикал” и текст обновлялся
+  const [nowTick, setNowTick] = useState(0);
   useEffect(() => {
-    const t = setInterval(() => setTick((x) => x + 1), 1000);
+    const t = setInterval(() => setNowTick((x) => x + 1), 1000);
     return () => clearInterval(t);
   }, []);
+
+  // pageTs — отметка открытия страницы (можно использовать на сервере)
+  const pageTsRef = useRef(Date.now());
 
   const list = useMemo(() => {
     return [...REVIEWS].sort((a, b) => (b.date || "").localeCompare(a.date || ""));
   }, []);
+
+  const cdLeft = cooldownLeftSec(); // будет обновляться из-за nowTick
 
   async function submitReview(e) {
     e.preventDefault();
@@ -90,7 +97,7 @@ export default function Reviews({ onLeadSubmit }) {
       return;
     }
 
-    // антиспам: “слишком быстро”
+    // антибот: слишком быстро
     if (tooFast()) {
       setResultReview("Слишком быстро 🙂 Подождите пару секунд и отправьте ещё раз.");
       return;
@@ -105,7 +112,7 @@ export default function Reviews({ onLeadSubmit }) {
     const formEl = e.currentTarget;
     const fd = new FormData(formEl);
 
-    // honeypot (скрытое поле): если заполнено — это бот
+    // honeypot: если заполнено — бот
     const hp = String(fd.get("company") || "").trim();
     if (hp) return;
 
@@ -131,9 +138,11 @@ export default function Reviews({ onLeadSubmit }) {
         comment: `ОТЗЫВ:\n${text}`,
         source: "reviews_form",
         kind: "review",
+        page: "/reviews",
+        pageTitle: "Отзывы",
+        pageTs: pageTsRef.current,
       });
 
-      // ✅ успех
       setResultReview("Спасибо! Отзыв отправлен ✅ (появится после проверки)");
       formEl.reset();
       setHuman(false);
@@ -171,6 +180,9 @@ export default function Reviews({ onLeadSubmit }) {
         comment: "КОНСУЛЬТАЦИЯ: Перезвонить по заявке с блока под отзывами.",
         source: "reviews_promo",
         kind: "consult",
+        page: "/reviews",
+        pageTitle: "Отзывы — блок «Получить консультацию»",
+        pageTs: pageTsRef.current,
       });
 
       setResultPromo("Заявка отправлена ✅ Перезвоним быстро");
@@ -183,8 +195,19 @@ export default function Reviews({ onLeadSubmit }) {
     }
   }
 
+  const canonical = "https://yourinfluencer.github.io/#/reviews";
+
   return (
     <section className="section">
+      <Helmet>
+        <title>Отзывы — ремонт техники во Владивостоке</title>
+        <meta
+          name="description"
+          content="Отзывы клиентов о ремонте и настройке техники. Оставьте отзыв — публикуем после проверки."
+        />
+        <link rel="canonical" href={canonical} />
+      </Helmet>
+
       <div className="wrap">
         <h1 className="pageTitle">Отзывы</h1>
         <p className="muted">
@@ -236,15 +259,18 @@ export default function Reviews({ onLeadSubmit }) {
                 required
               />
 
-              {/* простая капча */}
-              <label className="reviewCaptcha">
-                <input
-                  type="checkbox"
-                  checked={human}
-                  onChange={(e) => setHuman(e.target.checked)}
-                />
-                <span>Я не робот</span>
-              </label>
+              <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+                <label className="reviewCaptcha">
+                  <input type="checkbox" checked={human} onChange={(e) => setHuman(e.target.checked)} />
+                  <span>Я не робот</span>
+                </label>
+
+                {cdLeft > 0 && (
+                  <div className="muted small">
+                    Защита от спама: можно отправить ещё через <b>{cdLeft} сек</b>.
+                  </div>
+                )}
+              </div>
 
               <button className="btn btnPrimary" type="submit" disabled={sendingReview}>
                 {sendingReview ? "Отправляем..." : "Отправить отзыв"}

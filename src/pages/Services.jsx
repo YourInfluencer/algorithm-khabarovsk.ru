@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import "../styles/Services.css";
 
 const QUICK = [
@@ -101,6 +102,20 @@ export default function Services() {
 
   return (
     <section className="section">
+      <Helmet>
+        <title>Услуги — ремонт техники во Владивостоке</title>
+        <meta
+          name="description"
+          content="Услуги: ремонт телевизоров, ПК/ноутбуков, принтеров и МФУ, Wi-Fi/интернет, IP-камер, телефонов и планшетов. Быстрый выбор проблемы, выезд мастера, согласование цены до работ."
+        />
+        {/* OG */}
+        <meta property="og:title" content="Услуги — ремонт техники во Владивостоке" />
+        <meta
+          property="og:description"
+          content="Телевизоры, ПК/ноутбуки, принтеры, Wi-Fi, IP-камеры, телефоны/планшеты. Быстрый выбор проблемы и заявка с подсказками."
+        />
+      </Helmet>
+
       <div className="wrap">
         <h1 className="pageTitle">Услуги</h1>
         <p className="muted">
@@ -109,6 +124,7 @@ export default function Services() {
 
         <div className="card">
           <div className="cardTitle">Быстрый выбор проблемы</div>
+
           <div className="quickGrid">
             {QUICK.map((q) => (
               <button
@@ -137,11 +153,11 @@ export default function Services() {
               Оставить заявку
             </button>
 
-          <span className="muted small">или выберите категорию ниже</span>
+            <span className="muted small">или выберите категорию ниже</span>
           </div>
         </div>
 
-        {/* PHOTO BANNER (services) */}
+        {/* PHOTO BANNER */}
         <div className="photoBanner photoBannerServices" aria-label="Сервисный ремонт">
           <img
             className="photoBannerImg"

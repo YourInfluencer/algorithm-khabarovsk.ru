@@ -319,3 +319,53 @@
   height:18px;
   accent-color: var(--accent);
 }
+
+/* =========================
+   Reviews: captcha + honeypot
+   (append to end of Reviews.css)
+   ========================= */
+
+/* honeypot: invisible but exists for bots */
+.hp{
+  position:absolute !important;
+  left:-9999px !important;
+  top:auto !important;
+  width:1px !important;
+  height:1px !important;
+  overflow:hidden !important;
+  opacity:0 !important;
+  pointer-events:none !important;
+}
+
+/* captcha pill */
+.reviewCaptcha{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 12px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  color: var(--text);
+  font-weight:800;
+  user-select:none;
+}
+
+.reviewCaptcha input[type="checkbox"]{
+  width:18px;
+  height:18px;
+  accent-color: var(--accent);
+}
+
+/* optional: make the textarea full width even if form becomes grid somewhere */
+.reviewForm .reviewTextarea{
+  width:100%;
+}
+
+/* mobile: captcha takes full width if needed */
+@media (max-width: 520px){
+  .reviewCaptcha{
+    width:100%;
+    justify-content:center;
+  }
+}
