@@ -4,19 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Primary SEO (база для главной; дальше переопределит react-helmet) -->
+    <!-- Base SEO (для первой загрузки; дальше может переопределяться react-helmet) -->
     <title>Алгоритм — ремонт техники во Владивостоке</title>
     <meta
       name="description"
       content="Алгоритм — ремонт и настройка техники во Владивостоке: телевизоры, компьютеры/ноутбуки, принтеры/МФУ, Wi-Fi/интернет, IP-камеры, телефоны/планшеты. Цена до начала работ, выезд по городу, гарантия."
     />
     <meta name="robots" content="index,follow" />
+    <meta name="theme-color" content="#0b1020" />
 
-    <!-- Canonical (для домена; страницы сделает Seo.jsx) -->
     <link rel="canonical" href="https://algorithm-vladivostok.ru/" />
 
-    <!-- Open Graph (база; страницы сделает Seo.jsx, но это полезный дефолт) -->
+    <!-- Open Graph base -->
     <meta property="og:type" content="website" />
+    <meta property="og:locale" content="ru_RU" />
     <meta property="og:site_name" content="Алгоритм" />
     <meta property="og:title" content="Алгоритм — ремонт техники во Владивостоке" />
     <meta
@@ -28,7 +29,7 @@
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
 
-    <!-- Twitter (база) -->
+    <!-- Twitter base -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Алгоритм — ремонт техники во Владивостоке" />
     <meta
@@ -42,6 +43,9 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
+    <!-- Optional: preload OG image -->
+    <link rel="preload" as="image" href="/og-cover.webp" imagesizes="1200px" />
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -50,7 +54,7 @@
       rel="stylesheet"
     />
 
-    <!-- LocalBusiness schema (валидный JSON-LD) -->
+    <!-- LocalBusiness schema -->
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",

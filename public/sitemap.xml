@@ -1,9 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://algorithm-vladivostok.ru/</loc></url>
-  <url><loc>https://algorithm-vladivostok.ru/services</loc></url>
-  <url><loc>https://algorithm-vladivostok.ru/prices</loc></url>
-  <url><loc>https://algorithm-vladivostok.ru/reviews</loc></url>
-  <url><loc>https://algorithm-vladivostok.ru/consult</loc></url>
-  <url><loc>https://algorithm-vladivostok.ru/request</loc></url>
+  <url>
+    <loc>https://algorithm-vladivostok.ru/</loc>
+    <lastmod>2026-03-11</lastmod>
+  </url>
+  <url>
+    <loc>https://algorithm-vladivostok.ru/services</loc>
+    <lastmod>2026-03-11</lastmod>
+  </url>
+  <url>
+    <loc>https://algorithm-vladivostok.ru/prices</loc>
+    <lastmod>2026-03-11</lastmod>
+  </url>
+  <url>
+    <loc>https://algorithm-vladivostok.ru/reviews</loc>
+    <lastmod>2026-03-11</lastmod>
+  </url>
+  <url>
+    <loc>https://algorithm-vladivostok.ru/consult</loc>
+    <lastmod>2026-03-11</lastmod>
+  </url>
+  <url>
+    <loc>https://algorithm-vladivostok.ru/request</loc>
+    <lastmod>2026-03-11</lastmod>
+  </url>
 </urlset>

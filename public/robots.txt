@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
+Host: algorithm-vladivostok.ru
 Sitemap: https://algorithm-vladivostok.ru/sitemap.xml
