@@ -35,7 +35,7 @@ export default function Prices() {
 
     try {
       setSending(true);
-      const API = import.meta.env.VITE_API_URL || "http://localhost:8080";
+      const API = import.meta.env.VITE_API_URL || "";
 
       const resp = await fetch(`${API}/api/lead`, {
         method: "POST",
