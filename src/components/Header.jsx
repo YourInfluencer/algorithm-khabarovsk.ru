@@ -44,8 +44,8 @@ export default function Header({ theme, onToggleTheme, onOpenContacts }) {
           <Link className="navLink" to="/prices">Цены</Link>
           <Link className="navLink" to="/reviews">Отзывы</Link>
           <Link className="navLink" to="/consult">Консультация</Link>
-          <Link className="navLink" to="/request">Вызвать мастера</Link>
-          <button className="btn btnPrimary" type="button" onClick={onOpenContacts}>Контакты</button>
+          <Link className="btn btnPrimary" to="/request">Вызвать мастера</Link>
+          <button className="btn btnGhost" type="button" onClick={onOpenContacts}>Контакты</button>
         </nav>
 
         <div className="navMobile">

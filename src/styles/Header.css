@@ -178,16 +178,48 @@
 
 .mobileLink{
   display:block;
-  padding:12px 12px;
+  padding:13px 12px;
   border:1px solid var(--border);
   border-radius:14px;
   color:var(--text);
   font-weight:900;
   background:color-mix(in srgb, var(--surface) 85%, transparent);
   text-decoration:none;
+  font-size: 14px;
 }
 
 .mobileBtn{
   width:100%;
   text-align:left;
+}
+
+#devices{
+  scroll-margin-top: 76px; /* чтобы не пряталось под sticky header */
+}
+
+.heroCallBtn{
+  /* “цвет карточки” */
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  border-color: var(--border);
+  color: var(--text);
+}
+
+.heroCallBtn:hover{
+  background: color-mix(in srgb, var(--text) 6%, transparent);
+  border-color: var(--border);
+}
+
+.heroRightCta{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.heroRightCta .btn{
+  width: 100%;
+  justify-content: center;
+}
+
+@media (max-width: 420px){
+  .heroRightCta{ grid-template-columns: 1fr; }
 }

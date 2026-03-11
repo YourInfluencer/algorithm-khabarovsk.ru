@@ -509,3 +509,136 @@
 .teleph{
   font-size: 24px;
 }
+
+/* =========================
+   BENEFITS (marquee tiles)
+   ========================= */
+
+.benefits{
+  margin-top: 8px;
+}
+
+.benefitsHead{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:12px;
+}
+
+.benefitsTitle{
+  font-weight: 900;
+  font-size: 18px;
+}
+
+/* ВАЖНО: не рисуем общую "плитку" контейнера — только маска/фейд */
+.benefitsMarquee{
+  position: relative;
+  overflow: hidden;
+  padding: 2px 0;
+  overscroll-behavior: none;   /* ✅ чтобы не тянуло страницу */
+  touch-action: pan-y;         /* ✅ на тачах не будет горизонт. скролла */
+  overflow-x: hidden; /* ✅ */
+}
+
+/* скрыть скроллбар везде */
+.benefitsMarquee::-webkit-scrollbar{ height:0; width:0; }
+.benefitsMarquee{ scrollbar-width:none; -ms-overflow-style:none; }
+
+/* красивый fade по краям */
+.benefitsMarquee::before,
+.benefitsMarquee::after{
+  content:"";
+  position:absolute;
+  top:0; bottom:0;
+  width:36px;
+  pointer-events:none;
+  z-index:2;
+}
+.benefitsMarquee::before{
+  left:0;
+  background: linear-gradient(to right, var(--bg), transparent);
+}
+.benefitsMarquee::after{
+  right:0;
+  background: linear-gradient(to left, var(--bg), transparent);
+}
+
+/* трек */
+.benefitsTrack{
+  display:flex;
+  gap:12px;
+  width:max-content;
+  will-change: transform;
+  animation: benefits-marquee var(--marqueeDur, 80s) linear infinite;
+}
+
+/* пауза */
+.benefitsMarquee:hover .benefitsTrack,
+.benefitsMarquee.isPaused .benefitsTrack{
+  animation-play-state: paused;
+}
+
+@keyframes benefits-marquee{
+  0%{ transform: translateX(0); }
+  100%{ transform: translateX(-50%); }
+}
+
+/* ОТДЕЛЬНАЯ ПЛИТКА (без общей рамки) */
+.benefitItem{
+  flex: 0 0 auto;
+  width: 170px;
+  text-align: center;
+  padding: 14px 12px;
+  border-radius: calc(var(--r) + 4px);
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  box-shadow: 0 10px 26px rgba(0,0,0,.08);
+}
+
+/* иконка */
+.benefitIconWrap{
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 10px;
+  border-radius: 18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 26%, var(--border));
+  box-shadow: inset 0 1px 0 color-mix(in srgb, #fff 10%, transparent);
+}
+
+/* сами svg */
+.benefitSvg{
+  width: 32px;
+  height: 32px;
+  display:block;
+  color: var(--text);
+  opacity: .95;
+}
+
+.benefitLabel{
+  font-weight: 800;
+  font-size: 13px;
+  line-height: 1.25;
+  color: color-mix(in srgb, var(--text) 92%, transparent);
+}
+
+/* чуть компактнее на мобиле */
+@media (max-width: 520px){
+  .benefitItem{ width: 160px; }
+  .benefitIconWrap{ width: 58px; height: 58px; border-radius: 16px; }
+  .benefitSvg{ width: 32px; height: 32px; }
+  .benefitsMarquee::before,
+  .benefitsMarquee::after{ width: 24px; }
+  .benefitsTrack{ padding: 0 24px; }
+}
+
+.benefitsMarquee{
+  padding: 2px 36px;   /* было 2px 0 */
+}
+@media (max-width: 520px){
+  .benefitsMarquee{ padding: 2px 24px; }
+}
