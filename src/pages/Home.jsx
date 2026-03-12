@@ -566,7 +566,13 @@ export default function Home({ phone, tg, wa, onOpenContacts }) {
       <section className="section">
         <div className="wrap">
           <div className="photoBanner">
-            <img className="photoBannerImg" src="/img/banner-1.webp" alt="Ремонт техники" loading="lazy" />
+            <img
+              className="photoBannerImg"
+              src="/img/banner-1.webp"
+              alt="Ремонт техники"
+              loading="eager"
+              fetchPriority="high"
+            />
             <div className="photoBannerOverlay">
               <div className="photoBannerTitle">Работаем аккуратно и прозрачно</div>
               <div className="photoBannerText">Покажем причину, согласуем цену до начала работ.</div>
