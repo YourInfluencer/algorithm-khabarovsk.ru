@@ -57,52 +57,81 @@
 
     <!-- LocalBusiness schema -->
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "LocalBusiness",
-      "@id": "https://algorithm-khabarovsk.ru/#localbusiness",
-      "name": "Алгоритм",
-      "url": "https://algorithm-khabarovsk.ru/",
-      "telephone": "+7 (914) 774-24-68",
-      "areaServed": "Хабаровск",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Хабаровск",
-        "addressRegion": "Хабаровский край",
-        "addressCountry": "RU"
-      },
-      "sameAs": [
-        "https://t.me/SergejVladimirovichVDK",
-            "https://wa.me/79147742468"
-      ],
-      "serviceType": [
-        "Ремонт телевизоров",
-        "Ремонт компьютеров и ноутбуков",
-        "Настройка Wi-Fi/роутеров",
-        "Настройка принтеров и МФУ",
-        "Настройка IP-камер",
-        "Ремонт телефонов и планшетов"
-      ]
-    }
+      {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "@id": "https://algorithm-khabarovsk.ru/#localbusiness",
+        "name": "Алгоритм",
+        "url": "https://algorithm-khabarovsk.ru/",
+        "telephone": "+7 (914) 774-24-68",
+        "areaServed": "Хабаровск",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Хабаровск",
+          "addressRegion": "Хабаровский край",
+          "addressCountry": "RU"
+        },
+        "sameAs": [
+          "https://t.me/SergejVladimirovichVDK",
+          "https://wa.me/79147742468"
+        ],
+        "serviceType": [
+          "Ремонт телевизоров",
+          "Ремонт компьютеров и ноутбуков",
+          "Настройка Wi-Fi/роутеров",
+          "Настройка принтеров и МФУ",
+          "Настройка IP-камер",
+          "Ремонт телефонов и планшетов"
+        ]
+      }
     </script>
 
-<!-- Yandex.Metrika counter -->
-<script type="text/javascript">
-    (function(m,e,t,r,i,k,a){
-        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-        m[i].l=1*new Date();
-        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
-        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
-    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=107728044', 'ym');
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+      (function (m, e, t, r, i, k, a) {
+        m[i] =
+          m[i] ||
+          function () {
+            (m[i].a = m[i].a || []).push(arguments);
+          };
+        m[i].l = 1 * new Date();
+        for (var j = 0; j < document.scripts.length; j++) {
+          if (document.scripts[j].src === r) {
+            return;
+          }
+        }
+        k = e.createElement(t);
+        a = e.getElementsByTagName(t)[0];
+        k.async = 1;
+        k.src = r;
+        a.parentNode.insertBefore(k, a);
+      })(window, document, "script", "https://mc.yandex.ru/metrika/tag.js?id=107728044", "ym");
 
-    ym(107728044, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
-</script>
-<noscript><div><img src="https://mc.yandex.ru/watch/107728044" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-<!-- /Yandex.Metrika counter -->
-
+      ym(107728044, "init", {
+        ssr: true,
+        webvisor: true,
+        clickmap: true,
+        ecommerce: "dataLayer",
+        referrer: document.referrer,
+        url: location.href,
+        accurateTrackBounce: true,
+        trackLinks: true
+      });
+    </script>
+    <!-- /Yandex.Metrika counter -->
   </head>
 
   <body>
+    <noscript>
+      <div>
+        <img
+          src="https://mc.yandex.ru/watch/107728044"
+          style="position:absolute; left:-9999px;"
+          alt=""
+        />
+      </div>
+    </noscript>
+
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
