@@ -199,7 +199,7 @@ export default function Reviews({ onLeadSubmit }) {
     <>
     <Seo
         title="Отзывы"
-        description="Отзывы клиентов о ремонте и настройке техники во Владивостоке. Можно оставить отзыв — публикуем после проверки."
+        description="Отзывы клиентов о ремонте и настройке техники в Хабаровске. Можно оставить отзыв — публикуем после проверки."
         path="/reviews"
       />
     <section className="section">

@@ -10,8 +10,8 @@ app.use((req, res, next) => {
   const allowed = [
     "http://127.0.0.1:5173",
     "http://localhost:5173",
-    "https://www.algorithm-vladivostok.ru",
-    "https://algorithm-vladivostok.ru",
+    "https://www.algorithm-khabarovsk.ru",
+    "https://algorithm-khabarovsk.ru",
   ];
 
   if (allowed.includes(origin)) {
@@ -42,8 +42,8 @@ async function sendToTelegram(text) {
   if (!data.ok) throw new Error(`Telegram error: ${JSON.stringify(data)}`);
 }
 
-// ID: DDMMYYHHmm по Владивостоку (UTC+10)
-function leadIdVladivostok() {
+// ID: DDMMYYHHmm по Хабаровску (UTC+10)
+function leadIdKhabarovsk() {
   const now = new Date(Date.now() + 10 * 60 * 60 * 1000);
   const dd = String(now.getUTCDate()).padStart(2, "0");
   const mm = String(now.getUTCMonth() + 1).padStart(2, "0");
@@ -102,7 +102,7 @@ app.post("/api/lead", async (req, res) => {
 
     const hp = cleanStr(req.body?.hp, 40);
     if (hp) {
-      return res.json({ ok: true, id: leadIdVladivostok(), ts: Date.now() });
+      return res.json({ ok: true, id: leadIdKhabarovsk(), ts: Date.now() });
     }
 
     const pageTs = Number(req.body?.pageTs || 0);
@@ -120,7 +120,7 @@ app.post("/api/lead", async (req, res) => {
       return res.status(400).json({ ok: false, error: "PHONE_INVALID" });
     }
 
-    const leadId = leadIdVladivostok();
+    const leadId = leadIdKhabarovsk();
     const sourceRu = formatSourceRu(sourceRaw);
 
     let text =

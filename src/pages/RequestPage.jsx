@@ -79,7 +79,7 @@ export default function RequestPage({ onLeadSubmit }) {
     <>
     <Seo
         title="Заявка"
-        description="Оставьте заявку на ремонт/настройку техники во Владивостоке — перезвоним, уточним симптомы и согласуем стоимость."
+        description="Оставьте заявку на ремонт/настройку техники в Хабаровске — перезвоним, уточним симптомы и согласуем стоимость."
         path="/request"
       />
     <section className="section">

@@ -467,8 +467,8 @@ export default function Home({ phone, tg, wa, onOpenContacts }) {
   return (
     <>
       <Seo
-        title="Ремонт техники во Владивостоке"
-        description="Ремонт и настройка техники во Владивостоке: телевизоры, компьютеры/ноутбуки, принтеры, Wi-Fi, IP-камеры. Выезд, согласование цены до работ, гарантия."
+        title="Ремонт техники в Хабаровске"
+        description="Ремонт и настройка техники в Хабаровске: телевизоры, компьютеры/ноутбуки, принтеры, Wi-Fi, IP-камеры. Выезд, согласование цены до работ, гарантия."
         path="/"
       />
 
@@ -476,7 +476,7 @@ export default function Home({ phone, tg, wa, onOpenContacts }) {
       <section className="hero" id="home">
         <div className="wrap heroGrid">
           <div>
-            <h1>Ремонт техники во Владивостоке</h1>
+            <h1>Ремонт техники в Хабаровске</h1>
             <p className="muted">Быстро и понятно: выезд • диагностика • согласование цены • гарантия</p>
 
             <div className="cta">
